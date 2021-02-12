@@ -33,7 +33,7 @@ def getNextJobUrl(jobName){
     return "<a href=\"${env.JENKINS_URL}job/${jobName}/${buildNumber}/\">Job: ${jobName}</a> <br \\>"
 }
 
-currentBuild.description = getNextJobUrl(env.JOB_NAME)
+//currentBuild.description = getNextJobUrl(env.JOB_NAME)
 env.STANDALONE=true
 
 stage ("build") {
