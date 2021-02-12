@@ -46,7 +46,7 @@ stage ("build") {
             string(name: 'upstream_build_number', value: env.BUILD_NUMBER),
             string(name: 's3_upload_name', value: env.JOB_NAME),
             string(name: 's3_base_path', value: s3.getBasePath()),
-            bool(name: 'standalone', value: true)
+            booleanParam(name: 'standalone', value: true)
         ], 
         wait: true, 
         propagate: true
