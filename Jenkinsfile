@@ -42,6 +42,7 @@ def s3BasePath = s3.getBasePath()
 def s3Bucket = s3.getDefaultBucket()
 
 //currentBuild.description = getNextJobUrl(env.JOB_NAME)
+/*
 stage("setup") {
     cipipeline.cinode(label: "all-in-one-build-slave", timeout: 5400) {
             def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
@@ -58,19 +59,19 @@ stage("setup") {
             s3.upload("sources.tar.gz", s3SourcePath, s3Bucket, "eu-west-1")
     }
 }
-
+*/
 stage ("build") {
     build job: 
         'mbed-os-ci-tfm-build', 
         parameters: [
-            string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
-            string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
-            string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            string(name: 'upstream_build_number', value: upstreamBuildNumber),
-            string(name: 's3_upload_name', value: s3UploadName),
-            string(name: 's3_base_path', value: s3BasePath),
+            //string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
+            //string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
+            //string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
+            //string(name: 'upstream_build_number', value: upstreamBuildNumber),
+            //string(name: 's3_upload_name', value: s3UploadName),
+            //string(name: 's3_base_path', value: s3BasePath),
             //string(name: 'pr_head_sha', value: github.getOriginalPrHeadSha()),
-            booleanParam(name: 'standalone', value: true)
+            //booleanParam(name: 'standalone', value: true)
         ], 
         wait: true, 
         propagate: true
