@@ -43,7 +43,7 @@ stage ("build") {
             string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            string(name: 'upstream_build_number', env.BUILD_NUMBER),
+            string(name: 'upstream_build_number', value: env.BUILD_NUMBER),
             string(name: 's3_upload_name', value: env.JOB_NAME),
             string(name: 's3_base_path', value: s3.getBasePath()),
             bool(name: 'standalone', value: true)
@@ -59,7 +59,7 @@ stage ("test") {
             string(name: 'targets_toolchains_test', value: params['targets_toolchains_test']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            string(name: 'upstream_build_number', env.BUILD_NUMBER),
+            string(name: 'upstream_build_number', value: env.BUILD_NUMBER),
             string(name: 's3_upload_name', value: env.JOB_NAME),
             string(name: 's3_base_path', value: s3.getBasePath())
         ], 
