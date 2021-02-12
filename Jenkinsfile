@@ -33,17 +33,17 @@ def getNextJobUrl(jobName){
     return "<a href=\"${env.JENKINS_URL}job/${jobName}/${buildNumber}/\">Job: ${jobName}</a> <br \\>"
 }
 
+def mbedOSTopic = params.mbed_os_topic
+def mbedOSFork = params.mbed_os_fork
+def gitHubBranchId = github.getBranchId(mbedOSTopic)
+def upstreamBuildNumber = env.BUILD_NUMBER
+def s3UploadName = env.JOB_NAME
+def s3BasePath = s3.getBasePath()
+def s3Bucket = s3.getDefaultBucket()
+
 //currentBuild.description = getNextJobUrl(env.JOB_NAME)
 stage("setup") {
     cipipeline.cinode(label: "all-in-one-build-slave", timeout: 5400) {
-            def mbedOSTopic = params.mbed_os_topic
-            def mbedOSFork = params.mbed_os_fork
-            def gitHubBranchId = github.getBranchId(mbedOSTopic)
-            def upstreamBuildNumber = params.upstream_build_number
-            def s3UploadName = params.s3_upload_name
-            def s3BasePath = params.s3_base_path
-            def s3Bucket = s3.getDefaultBucket()
-
             def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
 
             dir("mbed-os-tf-m-regression-tests"){
@@ -66,10 +66,10 @@ stage ("build") {
             string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            string(name: 'upstream_build_number', value: env.BUILD_NUMBER),
-            string(name: 's3_upload_name', value: env.JOB_NAME),
-            string(name: 's3_base_path', value: s3.getBasePath()),
-            string(name: 'pr_head_sha', value: github.getOriginalPrHeadSha()),
+            string(name: 'upstream_build_number', value: upstreamBuildNumber),
+            string(name: 's3_upload_name', value: s3UploadName),
+            string(name: 's3_base_path', value: s3BasePath),
+            //string(name: 'pr_head_sha', value: github.getOriginalPrHeadSha()),
             booleanParam(name: 'standalone', value: true)
         ], 
         wait: true, 
@@ -83,9 +83,9 @@ stage ("test") {
             string(name: 'targets_toolchains_test', value: params['targets_toolchains_test']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            string(name: 'upstream_build_number', value: env.BUILD_NUMBER),
-            string(name: 's3_upload_name', value: env.JOB_NAME),
-            string(name: 's3_base_path', value: s3.getBasePath())
+            string(name: 'upstream_build_number', value: upstreamBuildNumber),
+            string(name: 's3_upload_name', value: s3UploadName),
+            string(name: 's3_base_path', value: s3BasePath),
         ], 
         wait: true, 
         propagate: true
