@@ -42,6 +42,7 @@ stage("setup") {
             def upstreamBuildNumber = params.upstream_build_number
             def s3UploadName = params.s3_upload_name
             def s3BasePath = params.s3_base_path
+            def s3Bucket = s3.getDefaultBucket()
 
             def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
 
