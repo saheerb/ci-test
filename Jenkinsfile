@@ -34,7 +34,27 @@ def getNextJobUrl(jobName){
 }
 
 //currentBuild.description = getNextJobUrl(env.JOB_NAME)
-env.STANDALONE=true
+stage("setup") {
+    def mbedOSTopic = params.mbed_os_topic
+    def mbedOSFork = params.mbed_os_fork
+    def gitHubBranchId = github.getBranchId(mbedOSTopic)
+    def upstreamBuildNumber = params.upstream_build_number
+    def s3UploadName = params.s3_upload_name
+    def s3BasePath = params.s3_base_path
+
+    def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
+
+    dir("mbed-os-tf-m-regression-tests"){
+        checkout scm
+        sh "ls"
+        sh "git clone https://github.com/${mbedOSFork}/mbed-os.git -b ${mbedOSTopic}"
+    }
+    
+    sh "tar -czf sources.tar.gz mbed-os-tf-m-regression-tests --exclude-vcs"
+
+    // upload source
+    s3.upload("sources.tar.gz", s3SourcePath, s3Bucket, "eu-west-1")
+}
 
 stage ("build") {
     build job: 
