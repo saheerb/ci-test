@@ -64,14 +64,14 @@ stage ("build") {
     build job: 
         'mbed-os-ci-tfm-build', 
         parameters: [
-            //string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
-            //string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
-            //string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
-            //string(name: 'upstream_build_number', value: upstreamBuildNumber),
-            //string(name: 's3_upload_name', value: s3UploadName),
-            //string(name: 's3_base_path', value: s3BasePath),
-            //string(name: 'pr_head_sha', value: github.getOriginalPrHeadSha()),
-            //booleanParam(name: 'standalone', value: true)
+            string(name: 'targets_toolchains_build', value: params['targets_toolchains_build']),
+            string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
+            string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
+            string(name: 'upstream_build_number', value: upstreamBuildNumber),
+            string(name: 's3_upload_name', value: s3UploadName),
+            string(name: 's3_base_path', value: s3BasePath),
+            string(name: 'pr_head_sha', value: github.getOriginalPrHeadSha()),
+            booleanParam(name: 'standalone', value: true)
         ], 
         wait: true, 
         propagate: true
