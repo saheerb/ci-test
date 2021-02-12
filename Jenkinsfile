@@ -48,7 +48,7 @@ stage("setup") {
             dir("mbed-os-tf-m-regression-tests"){
                 checkout scm
                 sh "ls"
-                sh "git clone https://github.com/${mbedOSFork}/mbed-os.git -b ${mbedOSTopic}"
+                sh "git clone https://github.com/${mbedOSFork}.git -b ${mbedOSTopic}"
             }
 
             sh "tar -czf sources.tar.gz mbed-os-tf-m-regression-tests --exclude-vcs"
