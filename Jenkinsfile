@@ -96,7 +96,7 @@ stage ("test") {
 
 
 mbed.run_job(
-        subBuildsPostfix: "-standalone",
+        subBuildsPostfix: "-tfm-standalone",
         mbed_os_fork: params['mbed_os_fork'],
         mbed_os_topic: params['mbed_os_topic'],
         targets_toolchains_build: params['targets_toolchains_build'],
