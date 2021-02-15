@@ -60,6 +60,7 @@ stage("setup") {
     }
 }
 */
+/*
 stage ("build") {
     build job: 
         'mbed-os-ci-tfm-build', 
@@ -91,4 +92,17 @@ stage ("test") {
         wait: true, 
         propagate: true
 }
+*/
+
+
+mbed.run_job(
+        subBuildsPostfix: "-tfm",
+        mbed_os_fork: params['mbed_os_fork'],
+        mbed_os_topic: params['mbed_os_topic'],
+        targets_toolchains_build: params['targets_toolchains_build'],
+        targets_toolchains_test: params['targets_toolchains_test']
+        setProperties: false,
+        checkout: {}
+)
+
 
