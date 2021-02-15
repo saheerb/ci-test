@@ -102,7 +102,7 @@ mbed.run_job(
         targets_toolchains_build: params['targets_toolchains_build'],
         targets_toolchains_test: params['targets_toolchains_test'],
         setProperties: false,
-        checkout: {}
+        checkout: null
 )
 
 
