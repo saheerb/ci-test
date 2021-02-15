@@ -64,7 +64,7 @@ stage ("build") {
     build job: 
         'mbed-os-ci-tfm-build', 
         parameters: [
-            string(name: 'targets_toolchains_build', value: params['targets_toolchains']),
+            string(name: 'targets_toolchains', value: params['targets_toolchains_build']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
             string(name: 'upstream_build_number', value: upstreamBuildNumber),
@@ -81,7 +81,7 @@ stage ("test") {
     build job: 
         'mbed-os-ci-tfm-test', 
         parameters: [
-            string(name: 'targets_toolchains_test', value: params['targets_toolchains_test']),
+            string(name: 'targets_toolchains', value: params['targets_toolchains_test']),
             string(name: 'mbed_os_topic', value: params['mbed_os_topic']),
             string(name: 'mbed_os_fork', value: params['mbed_os_fork']),
             string(name: 'upstream_build_number', value: upstreamBuildNumber),
