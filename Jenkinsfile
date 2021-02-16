@@ -42,7 +42,7 @@ def s3BasePath = s3.getBasePath()
 def s3Bucket = s3.getDefaultBucket()
 
 //currentBuild.description = getNextJobUrl(env.JOB_NAME)
-/*
+
 stage("setup") {
     cipipeline.cinode(label: "all-in-one-build-slave", timeout: 5400) {
             def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
@@ -59,7 +59,7 @@ stage("setup") {
             s3.upload("sources.tar.gz", s3SourcePath, s3Bucket, "eu-west-1")
     }
 }
-*/
+
 /*
 stage ("build") {
     build job: 
