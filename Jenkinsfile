@@ -45,7 +45,7 @@ def s3Bucket = s3.getDefaultBucket()
 
 stage("setup") {
     cipipeline.cinode(label: "all-in-one-build-slave", timeout: 5400) {
-            def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/${s3UploadName}.tar.gz"
+            def s3SourcePath = "${s3BasePath}/sources/${gitHubBranchId}/${upstreamBuildNumber}/sources.tar.gz"
 
             dir("mbed-os-tf-m-regression-tests"){
                 checkout scm
