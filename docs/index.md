@@ -66,6 +66,14 @@
   * [How to setup basic next environment](#how-to-setup-basic-next-environment)
     + [Workflow for next/tf-a-job-configs.git](#workflow-for-next-tf-a-job-configsgit)
     + [Workflow for other repositories](#workflow-for-other-repositories)
+- [Uploading files into shared repository](#uploading-files-into-shared-repository#)
+  * [Installation](#installation#)
+  * [Upload a file](#upload-a-file#)
+  * [Examples](#examples#)
+  * [Obtaining a token](#obtaining-a-token#)
+  * [Overwrite a file](#overwrite-a-file#)
+  * [Delete a file](#delete-a-file#)
+  * [Future updates](#future-updates#)
 - [Misc Info](#misc-info)
   * [LAVA Ready](#lava-ready)
 
@@ -992,6 +1000,96 @@ Other repositories, that are used inside the jobs, can be copied to other server
 Similar workflow should be used when migrating changes to ci/tf-a-scripts and ci/tf-a-job-configs repositories. Changes in the next/* should be sent for review against repositories in ci/* path. 
 
 As noted above, changes in next/tf-a-job-configs can be self approved and merged. Changes in user repositories can be pushed without reviews.
+
+# Uploading files into shared repository
+
+For those files that are prerequisites for CI execution, i.e. `SCP RAM`, Code Coverage FVP plugin, etc. are shared through https://downloads.trustedfirmware.org and *tuxput* is the service which allows users to directly upload to *S3* without having *AWS* credentials into the latter site.
+
+## Installation
+
+The `tpcli` command is distributed as part of the `tuxput` python package. To install, run:
+
+```
+$ pip install tuxput
+```
+
+## Upload A File
+
+Example:
+
+```
+$ tpcli -t <token> https://publish.trustedfirmware.org/upload/path/on/server file
+```
+
+where *tuxput* instance's endpoint is at https://publish.trustedfirmware.org/upload/.*
+
+Anything specified after the `upload/` is interpreted as a folder to use for the file that has been uploaded. If you have permission to write to that path and the folder doesn't exist then it is created. If the upload target is a directory instead of a file, `tpcli` recurses through the directory and add it to the folder prefix. When `tuxput` has finished attempting to upload, it prints out a list of the results for each file.  Successful uploads reports as `HTTP 204`, and if it was unsuccessful the error message will be displayed.
+
+## Examples
+
+1. Single file upload:
+
+```
+$ touch sample.txt
+$ tpcli -t <token> https://publish.trustedfirmware.org/upload/demo sample.txt
+```
+
+produces:
+
+```
+https://downloads.trustedfirmware.org/demo/sample.txt
+```
+
+2. Directory upload:
+
+```
+$ mkdir demo2
+$ mkdir demo2/sub
+$ touch demo2/sample1.txt
+$ touch demo2/sub/sample2.txt
+$ tpcli -t <token> https://publish.trustedfirmware.org/upload demo2
+```
+
+produces:
+
+```
+https://downloads.trustedfirmware.org/demo2/sample1.txt
+https://downloads.trustedfirmware.org/demo2/sub/sample2.txt
+```
+
+3. Directory upload with a new folder in the path:
+
+```
+$ mkdir demo2
+$ mkdir demo2/sub
+$ touch demo2/sample1.txt
+$ touch demo2/sub/sample2.txt
+$ tpcli -t <token> https://publish.trustedfirmware.org/upload/builds/202105 demo2
+```
+
+produces:
+
+```
+https://downloads.trustedfirmware.org/builds/202105/demo2/sample1.txt
+https://downloads.trustedfirmware.org/builds/202105/demo2/sub/sample2.txt
+```
+
+## Obtaining a token
+
+In order to obtain a token, please open an LSS ticket.
+
+## Overwrite a file
+
+The ability to overwrite previous uploads has been enabled on this instance of tuxput.
+
+## Delete a file
+
+*Tuxput* does not currently offer a way to delete a file. If you need a file or folder deleted, please submit an LSS ticket so that we can manually remove it.
+
+## Future Updates
+
+The project is being hosted at https://gitlab.com/Linaro/tuxput .If you run into a bug or have a feature request, please submit it there.
+
 
 # Misc Info
 
