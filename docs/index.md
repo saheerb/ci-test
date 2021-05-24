@@ -57,21 +57,6 @@
   * [Upgrades](#upgrades-1)
   * [LAVA instance changes](#lava-instance-changes-1)
   * [Current list of available devices](#current-list-of-available-devices-1)
-- [Local LAVA instance set up](#local-lava-instance-set-up-1)
-- [New device enablement in LAVA](#new-device-enablement-in-lava-1)
-- [Board setup](#board-setup-1)
-  * [Juno](#juno-1)
-  * [Peripherals](#peripherals-2)
-    + [Deployment](#deployment-2)
-    + [Troubleshooting](#troubleshooting-2)
-  * [MPS2](#mps2-1)
-    + [Peripherals](#peripherals-3)
-    + [Deployment](#deployment-3)
-    + [Troubleshooting](#troubleshooting-3)
-  * [Musca B1](#musca-b1-1)
-    + [Flashing the device for the first time.](#flashing-the-device-for-the-first-time)
-    + [Turn on automation](#turn-on-automation-1)
-    + [Turn auto power on](#turn-auto-power-on-1)
 - [SQUAD](#squad)
   * [TF-A](#tf-a)
   * [TF-M](#tf-m)
@@ -873,106 +858,6 @@ Most common cases where ticket is required include:
 ## Current list of available devices
 
 Up-to-date list of devices is available from the [LAVA web UI](https://tf.validation.linaro.org/scheduler/alldevices/active). A [simplified view](https://tf.validation.linaro.org/scheduler/) shows only the device types. Currently, TF LAVA instance has Juno, MPS2, Musca B1 and QEMU devices.
-
-# Local LAVA instance set up
-
-Setting up a local LAVA instance that can be used for debugging or improving LAVA code, as well as new device enablement can be done in a few ways. The easiest is to use the official [LAVA’s docker-compose repository](https://git.lavasoftware.org/lava/pkg/docker-compose) and follow the [README instructions](https://git.lavasoftware.org/lava/pkg/docker-compose/-/blob/master/README.md).
-
-# New device enablement in LAVA
-
-Enabling new devices in LAVA is described in the [LAVA documentation](https://master.lavasoftware.org/static/docs/v2/devicetypes.html).
-
-# Board setup
-
-## Juno
-More details on Collaborate page: https://collaborate.linaro.org/display/CTT/Juno 
-
-## Peripherals
-
-Serial: Connected to serial console.
-
-Power: 
-
-Ethernet: Both the front and the back interfaces need to be connected.
-
-Storage: SSD and USB stick (for boot image).
-
-### Deployment
-
-After various iterations of deployment methods, the current method is loading a master image on SD card or USB stick, and booting a known good image from that. The known good image can be found [here](https://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/lkft/sumo/juno/lkft/linux-stable-rc-5.1/62/juno-oe-uboot.zip).
-
-### Troubleshooting
-
-The most common issue with Juno is broken PDU ports. The ports get stuck in ON mode so the board never reboots and can thus not interrupt the boot loader.
-
-Another common issue is "Failed to erase old recovery image" which is generally an issue with the SD card. It is solved as follows:
-1. Take brand new SD card and a root/sudo user on your SD reader capable *nix device
-1. Run "parted /dev/<diskID>
-1. mklabel msdos
-1. mkpart
-   1. primary
-   1. fat16
-   1. 1M
-   1. 2G
-1. exit parted
-1. mkfs.fat16 /dev/<diskID> -n JUNO<details>
-1. Download the recovery image from a health check
-1. Unpack and copy contents to SD card.
-1. Put a new card in a Juno device and run a health check. It might have umount issues on the first try. If so, try again.
-
-## MPS2
-
-More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MPS2 
-
-### Peripherals
-
-Serial: Connected to serial console or usb serial connected to host.
-
-Power: 12v
-
-Ethernet: One port connected.
-
-USB: Mini usb connected to host.
-
-Storage: sd card in an [SD Mux](https://www.linux-automation.com/en/).
-
-### Deployment
-
-The technical reference manual can be found here.
-
-An example [health check](https://tf.validation.linaro.org/scheduler/job/53307/definition) with an image to use for deployment on MPS2 devices.
-
-There is also access to a [device dictionary](https://tf.validation.linaro.org/scheduler/device/mps2-04/devicedict) which describes the process of using SDMux with the board.
-
-In order to use SDMux, the host must have [sd-mux-ctrl](https://wiki.tizen.org/SD_MUX#Software) installed.
-
-### Troubleshooting
-
-We found that the sd card containing the boot image easily got corrupted and that would take the board offline until manual intervention is achieved.
-
-This is mitigated with use of the SDMux and there have been few known issues since.
-
-[SD Mux](https://shop.linux-automation.com/) can be bought from https://shop.linux-automation.com/.
-
-## Musca B1
-
-More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MuscaB1 
-
-### Flashing the device for the first time.
-
-Flashing instructions are available on [ARM community pages](https://community.arm.com/developer/tools-software/oss-platforms/w/docs/552/musca-b1-firmware-update-qspi-eflash-boot-recovery). It's only possible to run the Windows version of the instructions. Currently LAB uses QSPI firmware version 3.4.
-
-firmware: [DAPLink_QSPI_V34.bin](https://collaborate.linaro.org/download/attachments/132161009/DAPLink_QSPI_V34.bin?version=1&modificationDate=1596628064578&api=v2)
-
-After initial flashing is done, the rest of the setup can be done with a Linux host. Some commands for DAPLink can be found on [ARMmbed Github repository](https://github.com/ARMmbed/DAPLink/blob/master/docs/MSD_COMMANDS.md).
-
-### Turn on automation
-
-Boards need to have the 'automation' enabled. This is done by writing the 'auto_on.cfg' file to the USB mass storage 'MUSCA_B' while pressing nSRST button.
-
-### Turn auto power on
-
-There is a hidden command in the v3.4 firmware: Auto power can be turned on by writing 'auto_pwr.cfg' to the USB mass storage 'MUSCA_B' while pressing nSRST button. Turning auto power off can be done by writing 'hard_pwr.cfg' to the USB mass storage 'MUSCA_B' while pressing the nSRST button.
 
 # SQUAD
 
