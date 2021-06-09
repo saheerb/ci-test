@@ -67,14 +67,16 @@
   * [How to setup basic next environment](#how-to-setup-basic-next-environment)
     + [Workflow for next/tf-a-job-configs.git](#workflow-for-next-tf-a-job-configsgit)
     + [Workflow for other repositories](#workflow-for-other-repositories)
-- [Uploading files into shared repository](#uploading-files-into-shared-repository#)
-  * [Installation](#installation#)
-  * [Upload a file](#upload-a-file#)
-  * [Examples](#examples#)
-  * [Obtaining a token](#obtaining-a-token#)
-  * [Overwrite a file](#overwrite-a-file#)
-  * [Delete a file](#delete-a-file#)
-  * [Future updates](#future-updates#)
+- [Uploading files into shared repository](#uploading-files-into-shared-repository)
+  * [Tuxput Installation](#tuxput-installation)
+  * [Upload a file](#upload-a-file)
+  * [Examples](#examples)
+  * [Obtaining a token](#obtaining-a-token)
+  * [Overwrite a file](#overwrite-a-file)
+  * [Delete a file](#delete-a-file)
+  * [Future updates](#future-updates)
+- [FVP Docker Images](#fvp-docker-images)
+  * [FVP Models](#fvp-models)
 - [Misc Info](#misc-info)
   * [LAVA Ready](#lava-ready)
 
@@ -1042,7 +1044,7 @@ As noted above, changes in next/tf-a-job-configs can be self approved and merged
 
 For those files that are prerequisites for CI execution, i.e. `SCP RAM`, Code Coverage FVP plugin, etc. are shared through https://downloads.trustedfirmware.org and *tuxput* is the service which allows users to directly upload to *S3* without having *AWS* credentials into the latter site.
 
-## Installation
+## Tuxput Installation
 
 The `tpcli` command is distributed as part of the `tuxput` python package. To install, run:
 
@@ -1055,7 +1057,7 @@ $ pip install tuxput
 Example:
 
 ```
-$ tpcli -t <token> https://publish.trustedfirmware.org/upload/path/on/server file
+$ tpcli -t <token> -b trustedfirmware-prod-storage https://publish.trustedfirmware.org/upload/path/on/server file
 ```
 
 where *tuxput* instance's endpoint is at https://publish.trustedfirmware.org/upload/.*
@@ -1068,7 +1070,7 @@ Anything specified after the `upload/` is interpreted as a folder to use for the
 
 ```
 $ touch sample.txt
-$ tpcli -t <token> https://publish.trustedfirmware.org/upload/demo sample.txt
+$ tpcli -t <token> -b trustedfirmware-prod-storage https://publish.trustedfirmware.org/upload/demo sample.txt
 ```
 
 produces:
@@ -1084,7 +1086,7 @@ $ mkdir demo2
 $ mkdir demo2/sub
 $ touch demo2/sample1.txt
 $ touch demo2/sub/sample2.txt
-$ tpcli -t <token> https://publish.trustedfirmware.org/upload demo2
+$ tpcli -t <token> -b trustedfirmware-prod-storage https://publish.trustedfirmware.org/upload demo2
 ```
 
 produces:
@@ -1101,7 +1103,7 @@ $ mkdir demo2
 $ mkdir demo2/sub
 $ touch demo2/sample1.txt
 $ touch demo2/sub/sample2.txt
-$ tpcli -t <token> https://publish.trustedfirmware.org/upload/builds/202105 demo2
+$ tpcli -t <token> -b trustedfirmware-prod-storage https://publish.trustedfirmware.org/upload/builds/202105 demo2
 ```
 
 produces:
@@ -1127,9 +1129,40 @@ The ability to overwrite previous uploads has been enabled on this instance of t
 
 The project is being hosted at https://gitlab.com/Linaro/tuxput .If you run into a bug or have a feature request, please submit it there.
 
+# FVP Docker Images
+
+LAVA is used to launch FVP (fast) models based on CI artifacts. In turn, models are launched
+inside a containerized environment. In other words, models are **not** run from a bare metal
+host system, but inside containers on a LAVA host, where these are launched by
+LAVA using CI artifacts and configured model parameters. In case a new **FVP Docker Image** is required
+at the CI,  a contributor needs to download the corresponding FVP model tarball, the installer, and upload it 
+to a CI private repository, then a CI job would automatically generate the docker image.
+
+## FVP Models
+
+FVP model are commonly available at these sites:
+
+* [Silver FM000](https://silver.arm.com/browse/FM000)
+* [Arm Ecosystem Models](https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms/arm-ecosystem-models)
+
+Download the required model, i.e `FVP_Base_RevC-2xAEMvA_11.15_14.tgz`. Once download is completed, install [tuxput](#tuxput-installation) 
+package and run the following command using your personal token
+
+```
+tpcli -t <token> -b trustedfirmware-fvp  https://publish.trustedfirmware.org/upload <fvp model>
+```
+
+for the case of the `FVP_Base_RevC-2xAEMvA_11.15_14.tgz`, command becomes
+
+```
+tpcli -t <token> -b trustedfirmware-fvp  https://publish.trustedfirmware.org/upload FVP_Base_RevC-2xAEMvA_11.15_14.tgz
+```
+
+If no errors are seen, the corresponding [CI job](https://ci.trustedfirmware.org/job/fvp-docker-images/)
+would detect this new model in the repository and automatically creates the corresponding docker image. This is a cron job
+executed in a daily basis but can be also triggered manually: go to the CI job landing page and just click the 'Build now' icon.
 
 # Misc Info
-
 
 ## LAVA Ready
 
