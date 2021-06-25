@@ -4,6 +4,7 @@
 **Table of Contents**
 
 - [User Guide](#user-guide)
+  * [How to Contribute to this Document](#how-to-contribute-to-this-document)
   * [How to Contribute Code](#how-to-contribute-code)
     + [Gerrit Setup](#gerrit-setup)
     + [Commit and review](#commit-and-review)
@@ -84,6 +85,9 @@
 This Google Document is a draft for development and review. Once reviewed, the doc will be made available on Phabricator on the trustedfirmware.org website where additional content will be added and reviewed.
 
 This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/. 
+
+## How to Contribute to this Document
+As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be approved, please follow the steps in this section:
 
 ## How to Contribute Code
 The Trusted Firmware core projects, TF-M and TF-A, are both open source projects and both share the same way to accept user contributions.  Code changes, commonly known as patches or patchsets, are git-tracked so once the corresponding project is cloned, all content (history of previous patches which now are commits) is available at the user's machine.
