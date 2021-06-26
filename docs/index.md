@@ -87,7 +87,40 @@ This Google Document is a draft for development and review. Once reviewed, the d
 This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/. 
 
 ## How to Contribute to this Document
-As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be approved, please follow the steps in this section:
+As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be approved, please follow the steps in this section to add your improvements to this document:
+
+Note the steps were validated using Ubuntu 20.4. Other versions/OS's will need to be adjusted for.
+
+* Recall that this document repository is located [here](https://git.trustedfirmware.org/ci/tf-ci-users-guide.git)
+* First, you must authorize your account by navigating [here](https://github.com/login/oauth/authorize?response_type=code&client_id=1bdcda52ecaa25e3e63b&redirect_uri=https%3A%2F%2Freview.trustedfirmware.org%2Foauth&scope=user%3Aemail&state=fAZRKIu-VpdcK81W7P3tj9A8JpUFD47D00Uz5HTBsnw=) and clicking "Authorize."  This action will redirect you to the TrustedFirmware Review Dashboard.  **Make sure you're signed in!** 
+* Now click the "Browse" tab and click "Repositories"
+* Navigate to the ci/tf-ci-users-guide Repository and click on it.  You will land on the [admin page for the TF CI Users Guide](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide)
+* On the admin page in your browser, go to the settings page and then navigate to the SSH Keys section.
+* Add your credentials
+   * Since we will be using ssh, **open a terminal** and use the `ssh-keygen` command in your ~/.ssh directory to create a new keypair. Note you can use an existing key if you already have one.
+   * Still in the terminal, navigate to your ~/.ssh directory and copy the `id_rsa.pub` key. 
+   * Back in your browser under the admin --> SSH Keys,  in the `New SSH Key` field, paste the `id_rsa.pub` key into the entry, give it a name and save it.
+
+**You are now set up to begin setting up your local environment**
+
+* From a terminal, assure you have git and git-review set up
+```
+sudo apt-get update
+sudo apt install git
+sudo apt install git-review
+```
+Note there may be some dependencies to add as well. apt-get will let you know.
+
+* set up your environment using `git config` to get your user.name, user.email, etc.  set up
+* create your UsersGuide working directory and navigate to it.
+* Back in the Gerrit dashboard for the Users Guide, [found here](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide), click on the `SSH` tab.
+* On this page, copy the git clone example entry found in the `Clone with commit-msg hook` field.  This will be used on your local machine to clone the document that you can edit.
+* Create and navigate to the local working directory and paste the above git clone command to clone the repo into your working directory.
+* Make your edits to the docs/index.md file remembering this is markdown. Using a markdown editor such as remarkable can be helpful here.  Save the file and you're ready to perform a pull request back up to the master repo.
+* From your terminal, use `git add docs/index.md` to prep the modified file for the Gerrit review / PR.
+* From the terminal, use `git commit -s` that will take you to an editor for sign-off.  Add your comment, save, and exit.
+* From the terminal, enter `git review` to submit the review
+
 
 ## How to Contribute Code
 The Trusted Firmware core projects, TF-M and TF-A, are both open source projects and both share the same way to accept user contributions.  Code changes, commonly known as patches or patchsets, are git-tracked so once the corresponding project is cloned, all content (history of previous patches which now are commits) is available at the user's machine.
