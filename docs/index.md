@@ -27,7 +27,7 @@
   * [TF-A CI scripts overview](#tf-a-ci-scripts-overview)
   * [TF-M CI scripts overview](#tf-m-ci-scripts-overview)
 - [TF LAVA Instance](#tf-lava-instance)
-- [TF LAVA instance replication](#tf-lava-instance-replication)
+  * [TF LAVA instance replication](#tf-lava-instance-replication)
   * [LAVA Master](#lava-master)
   * [LAVA Dispatchers](#lava-dispatchers)
   * [Upgrades](#upgrades)
@@ -51,13 +51,6 @@
   * [Adding Boards to LAVA](#adding-boards-to-lava)
   * [Hardware Requirements](#hardware-requirements)
   * [How to get your board installed in the Linaro Cambridge Lab](#how-to-get-your-board-installed-in-the-linaro-cambridge-lab)
-- [TF LAVA instance](#tf-lava-instance)
-  * [TF LAVA instance replication](#tf-lava-instance-replication-1)
-  * [LAVA Master](#lava-master-1)
-  * [LAVA Dispatchers](#lava-dispatchers-1)
-  * [Upgrades](#upgrades-1)
-  * [LAVA instance changes](#lava-instance-changes-1)
-  * [Current list of available devices](#current-list-of-available-devices-1)
 - [SQUAD](#squad)
   * [TF-A](#tf-a)
   * [TF-M](#tf-m)
@@ -89,45 +82,45 @@ This Google Document is a draft for development and review. Once reviewed, the d
 This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/. 
 
 ## How to Contribute to this Document
-As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be approved, please follow the steps in this section to add your improvements to this document:
+As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be improved, please follow the steps in this section to add your improvements to this document:
 
-Note the steps were validated using Ubuntu 20.4. Other versions/OS's will need to be adjusted for.
+Note the steps were validated using Ubuntu 20.4. Other versions/OS's may need to be adjusted for.
 
-* Recall that this document repository is located [here](https://git.trustedfirmware.org/ci/tf-ci-users-guide.git)
+* This document's source repository is located [here](https://git.trustedfirmware.org/ci/tf-ci-users-guide.git)
 * First, you must authorize your account by navigating [here](https://github.com/login/oauth/authorize?response_type=code&client_id=1bdcda52ecaa25e3e63b&redirect_uri=https%3A%2F%2Freview.trustedfirmware.org%2Foauth&scope=user%3Aemail&state=fAZRKIu-VpdcK81W7P3tj9A8JpUFD47D00Uz5HTBsnw=) and clicking "Authorize."  This action will redirect you to the TrustedFirmware Review Dashboard.  **Make sure you're signed in!** 
 * Now click the "Browse" tab and click "Repositories"
-* Navigate to the ci/tf-ci-users-guide Repository and click on it.  You will land on the [admin page for the TF CI Users Guide](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide)
+* Navigate to the `ci/tf-ci-users-guide` repository and click on it.  You will land on the [admin page for the TF CI Users Guide](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide)
 * On the admin page in your browser, go to the settings page and then navigate to the SSH Keys section.
 * Add your credentials
    * Since we will be using ssh, **open a terminal** and use the `ssh-keygen` command in your ~/.ssh directory to create a new keypair. Note you can use an existing key if you already have one.
    * Still in the terminal, navigate to your ~/.ssh directory and copy the `id_rsa.pub` key. 
    * Back in your browser under the admin --> SSH Keys,  in the `New SSH Key` field, paste the `id_rsa.pub` key into the entry, give it a name and save it.
 
-**You are now set up to begin setting up your local environment**
+**You are now ready to set up your local environment**
 
-* From a terminal, assure you have git and git-review set up
+* From a terminal, ensure that you have git and git-review set up:
 ```
 sudo apt-get update
 sudo apt install git
 sudo apt install git-review
 ```
-Note there may be some dependencies to add as well. apt-get will let you know.
+(This may install any required dependencies automatically.)
 
 * set up your environment using `git config` to get your user.name, user.email, etc.  set up
 * create your UsersGuide working directory and navigate to it.
 * Back in the Gerrit dashboard for the Users Guide, [found here](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide), click on the `SSH` tab.
 * On this page, copy the git clone example entry found in the `Clone with commit-msg hook` field.  This will be used on your local machine to clone the document that you can edit.
 * Create and navigate to the local working directory and paste the above git clone command to clone the repo into your working directory.
-* Make your edits to the docs/index.md file remembering this is markdown. Using a markdown editor such as remarkable can be helpful here.  Save the file and you're ready to perform a pull request back up to the master repo.
+* Make your edits to the docs/index.md file using the Markdown syntax. Using a markdown editor such as Remarkable can be helpful here.  Save the file and you're ready to create a pull request to the master repo.
 * From your terminal, use `git add docs/index.md` to prep the modified file for the Gerrit review / PR.
 * From the terminal, use `git commit -s` that will take you to an editor for sign-off.  Add your comment, save, and exit.
-* From the terminal, enter `git review` to submit the review
+* From the terminal, enter `git review` to submit the pull request for the review to Gerrit.
 
 
 ## How to Contribute Code
 The Trusted Firmware core projects, TF-M and TF-A, are both open source projects and both share the same way to accept user contributions.  Code changes, commonly known as patches or patchsets, are git-tracked so once the corresponding project is cloned, all content (history of previous patches which now are commits) is available at the user's machine.
 
-TF projects use Gerrit https://review.trustedfirmware.org/dashboard/self as a centralized system to push, update, review and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open. 
+TF projects use Gerrit [https://review.trustedfirmware.org/](https://review.trustedfirmware.org/) as a centralized system to push, update, review and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open. 
 
 ![alt text](images/gerrit.png "Gerrit view")
 
@@ -192,7 +185,7 @@ More details about Gerrit can be found in the upstream documentation:
 
 ## From the maintainer's POV
 
-All CI is done with Jenkins at https://ci.trustedfirmware.org/. There are lots of jobs so as a first impression, it is difficult to follow the CI flow. Section 4, Pipeline description, describes each project’s CI in detail.
+All CI is done with Jenkins at https://ci.trustedfirmware.org/. There are lots of jobs, so as a first impression, it may seem difficult to follow the CI flow. Section 4, Pipeline description, describes each project’s CI in detail.
 
 ![alt text](images/Jenkins-All.png "Jenkins job")
 
@@ -236,7 +229,7 @@ Until recently, the only supported platform was the Juno board but now it also s
 
 FVP models are virtual platforms that are able to emulate specific Arm reference designs or platforms. See the Arm documentation for more details: https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms 
 
-These models are present on several docker images and LAVA uses these to boot and test a particular model. The specific docker image and model type is defined at the (LAVA)  job definition. Docker images (containing the models) are available in a private docker registry (987685672616.dkr.ecr.us-east-1.amazonaws.com) that LAVA has access. At the time of this writing,  these are the docker image names
+These models are present on several docker images and LAVA uses these to boot and test a particular model. The specific docker image and model type are defined in the (LAVA) job definition. Docker images (containing the models) are available in a private docker registry (987685672616.dkr.ecr.us-east-1.amazonaws.com) that LAVA has access to. At the time of this writing,  these are the docker image names
 
 * fvp:fvp_base_revc-2xaemv8a_11.12_38
 * fvp:foundation_platform_11.12_38
@@ -255,21 +248,21 @@ TF-M LAVA devices are:
 
 ## How to navigate tf.validation.linaro.org
 
-All LAVA jobs triggered by Jenkins are executed at the TF LAVA lab https://tf.validation.linaro.org/ instance. The Jenkins jobs that launches LAVA jobs are tf-a-builder https://ci.trustedfirmware.org/job/tf-a-builder/ and tf-m-lava-submit https://ci.trustedfirmware.org/job/tf-m-lava-submit/. The Jenkins jobs contain the corresponding LAVA id which can be used to find the corresponding job at https://tf.validation.linaro.org/. In case of tf-a-builder job, the LAVA log itself is fetched from LAVA lab and attached to the job as seeing below
+All LAVA jobs triggered by Jenkins are executed at the TF LAVA lab https://tf.validation.linaro.org/ instance. The Jenkins jobs that launch LAVA jobs are: `tf-a-builder` https://ci.trustedfirmware.org/job/tf-a-builder/ and `tf-m-lava-submit` https://ci.trustedfirmware.org/job/tf-m-lava-submit/. The Jenkins jobs contain the corresponding LAVA id which can be used to find the corresponding job at https://tf.validation.linaro.org/. In case of `tf-a-builder` job, the LAVA log itself is fetched from LAVA lab and attached to the job as seen below:
 
 ![alt text](images/Jenkins-49541.png "LAVA log")
 
-At the https://tf.validation.linaro.org/scheduler/alljobs jobs site, one can go to a particular job check results directly from LAVA
+At the https://tf.validation.linaro.org/scheduler/alljobs link, one can go to a particular job to check results directly from LAVA:
 
 ![alt text](images/LAVA-tf-juno.png "LAVA job")
 
-One powerful feature is the possibility to resubmit jobs: this enables the user to quickly modify a job definition and test it without the need to retriggered from Jenkins.
+One useful feature is the possibility to resubmit jobs: this enables the user to quickly modify a job definition and test it without the need to retrigger the full build from Jenkins:
 
 <img src="images/Submit-Job.png" width="480">
 
 ## How to read a job and investigate results
 
-The entrypoint to read a job failure is looking at the job’s landing page, i.e. https://tf.validation.linaro.org/scheduler/job/74086 
+The entrypoint to investigate a job failure is looking at the job’s landing page, i.e. https://tf.validation.linaro.org/scheduler/job/74086 
 
 ![alt text](images/LAVA-invalid-job.png "Invalid job")
 
@@ -277,11 +270,11 @@ Depending on the device type and job definition, the output can vary considerabl
 
 # Pipeline description
 
-The TF Open CI project is divided into two separate projects, each handling the respective project. Each is different in design so we describe each separately.
+The TF Open CI is divided into two separate pipelines, each handling the respective project (TF-A vs TF-M). Each is different in design so we describe each separately.
 
 ## TF-A CI pipeline description
 
-The TF-A CI pipeline https://git.trustedfirmware.org/ci/tf-a-job-configs.git/ had a refactor based on https://developer.trustedfirmware.org/w/collaboration/openci/, going from testing a single test configuration to hundreds of them. Besides improving considerably the QA, it added some complexity as we will see below.
+The TF-A CI pipeline https://git.trustedfirmware.org/ci/tf-a-job-configs.git/ underwent refactoring based on requirements in https://developer.trustedfirmware.org/w/collaboration/openci/, going from testing a single test configuration to hundreds of them. Besides improving considerably the QA, it added some complexity as we will see below.
 
 At the time of this writing, there are two (mostly) identical CIs, one running inside Arm https://jenkins.oss.arm.com/ (Internal CI) and one at https://ci.trustedfirmware.org/ (Open CI). These are two CI instances running in parallel but in different environments: the internal CI runs in a single node (master node) while the Open CI in multiple nodes (docker nodes). In the near future, only the Open CI will be running once all the internal CI features are fully migrated.
 
@@ -289,9 +282,9 @@ Below is a general picture of the Trusted firmware A CI flow. Top boxes are Jenk
 
 ![Alt text](images/tf-A-flow.png "TF-A Flow")
 
-The first job, the trigger-job, can be any job defined below, each covering a set of platforms and build/run configurations through test groups (TEST_GROUPS),  ultimately splitted as test descriptions (TEST_DESC). A  test description is tested by tf-a-builder job and a LAVA job is launched once artifacts are ready to be consumed.
+The first job, the trigger-job, can be any job defined below, each covering a set of platforms and build/run configurations through test groups (TEST_GROUPS),  ultimately split as test descriptions (TEST_DESC). A  test description is tested by `tf-a-builder` job and a LAVA job is launched once artifacts are ready to be consumed.
 
-In terms of the trigger source, jobs can be classified by either gerrit or scheduled
+In terms of the trigger source, jobs can be classified by either gerrit or scheduled:
 
 * Gerrit:
 
@@ -300,11 +293,11 @@ In terms of the trigger source, jobs can be classified by either gerrit or sched
    * **tf-tftf-gerrit-tforg-l1:** multijob, Allow +1, TF-A-tests
    * **tf-tftf-gerrit-tforg-l2:** multijob, Allow +2, TF-A-tests
   
-* Scheduled: daily triggered
+* Scheduled: daily triggered:
 
    * **tf-daily:** scheduled daily
 
-All the above jobs rely on downstream jobs, 
+All the above jobs rely on downstream jobs:
 
 * **tf-main:** multijob, TF-A and TF-A-tests
 * **tf-coverity:** freestyle, runs coverity scan
@@ -312,11 +305,11 @@ All the above jobs rely on downstream jobs,
 * **tf-ci-gateway:** split a test group (TEST_GROUPS) into multiple ‘.test’ files, each representing a test description (TEST_DESC)
 * **tf-a-builder:** freestyle, builds the package and launch a LAVA job
 
-Any job can be triggered manually by authorized users. Gerrit jobs are those triggered on behalf of gerrit actions, either ‘Allow +1’ or ‘Allow +2’, and track a particular project, either TF-A https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ or TF-A tests https://git.trustedfirmware.org/TF-A/tf-a-tests.git/. The following screenshot shows and example of the tf-gerrit-tforg-l1 job at the Jenkins instance
+Any job can be triggered manually by authorized users. Gerrit jobs are those triggered on behalf of gerrit actions, either ‘Allow +1’ or ‘Allow +2’, and track a particular project, either TF-A https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ or TF-A tests https://git.trustedfirmware.org/TF-A/tf-a-tests.git/. The following screenshot shows an example of the `tf-gerrit-tforg-l1` job at the Jenkins instance:
 
 ![Alt text](images/Jenkins-build-158.png "tf-gerrit job")
 
-The tf-gerrit-tforg-l1 indicates the tracking project, tf-gerrit-tforg-l1, and the level, tf-gerrit-tforg-l1. Levels indicate testing depth (test descriptions coverage) and are used in different phases in the development phase as seen below
+The tf-gerrit-tforg-l1 indicates the tracking project, tf-gerrit-tforg-l1, and the level, tf-gerrit-tforg-l1. Levels indicate testing depth (test descriptions coverage) and are used in different phases in the development phase as seen below:
 
 ![Alt text](images/ci-jobs-triggered-by-gerrit.png "jobs trigger")
 
@@ -338,15 +331,15 @@ The result of tf-a-builder is a set of artifacts: binaries, build log, environme
 
 In particular, if build produces a LAVA definition file, job.yaml, a LAVA job is launched through SQUAD https://qa-reports.linaro.org/tf/. Once the LAVA job finishes, jenkins fetches the log from LAVA and stores it in the corresponding jenkins job. It is worth mentioning that not all tf-a-builder jobs produce a LAVA job, i.e fvp model not supported, ‘nil’ run configuration provided in the test description, static check, etc. however most FVP and Juno produce one. One can see all executed LAVA jobs at https://tf.validation.linaro.org/scheduler/alljobs.
 
-Finally, depending on the CI execution outcome, this is reflected in gerrit as ‘TrustedFirmware Core Review’ comments
+Finally, depending on the CI execution outcome, this is reflected in Gerrit as ‘TrustedFirmware Code Review’ comments:
 
 ![Alt text](images/TF-Code-Review.png "Code review")
 
-Results from those LAVA executed jobs on behalf of the corresponding gerrit patch are also reflected in gerrit
+Results from those LAVA executed jobs on behalf of the corresponding gerrit patch are also reflected in Gerrit:
 
 ![Alt text](images/TF-code-review-Bot.png "Review Bot")
 
-In case of a job failure, it is more likely that you want to investigate the issue starting at the gerrit job, then following the CI job chain starting from the trigger job (top-bottom approach): 1. analyze results from the gerrit job, 2. use the report table produced by each tf-ci-gateway job, 3. the tf-a-builder job and finally 4. the tf-a-builder’s console. Looking at the following screenshot should help clarifying this concept
+In case of a job failure, it is more likely that you want to investigate the issue starting at the Gerrit job, then following the CI job chain starting from the trigger job (top-bottom approach): 1. analyze results from the Gerrit job, 2. use the report table produced by each tf-ci-gateway job, 3. the tf-a-builder job and finally 4. the tf-a-builder’s console log. Looking at the following screenshots should help clarifying this concept.
 
 1. Gerrit job level:
 
@@ -360,7 +353,7 @@ In case of a job failure, it is more likely that you want to investigate the iss
 
 ![Alt text](images/Jenkins-47759.png "Builder level")
 
-4. tf-a-builder’s console view:
+4. tf-a-builder’s console log view:
 
 ![Alt text](images/Jenkins-console-output.png "Console view")
 
@@ -370,7 +363,7 @@ TF-M jobs are found at https://ci.trustedfirmware.org/ and can be classified dep
 
 * Release job: active during release stage, manually triggered. XL size
 * Nightly job: active everyday to cover latest HEAD; in case of failure, notification is done through the tf-m mailing list. M size
-* Per-patch job: gerrit patch verify before merge. Size S
+* Per-patch job: gerrit patch verify before merge. S size
 
 Below is a diagram that shows their relationship and the amount of code coverage targeted.
 
@@ -399,7 +392,7 @@ Jobs can also be classified depending on their specific task:
 
 ### TF-M Job dependencies
 
-When a patch arrives at https://review.trustedfirmware.org/ and reviewed, a maintainer may allow the CI to be executed, which in turn triggers tf-m-static. This is exactly the same CI workflow as TF-A. In case of failure, the job cannot be merge into the stable branch. The tf-m-static triggers many more jobs as seen in the picture below
+When a patch arrives at https://review.trustedfirmware.org/ and reviewed, a maintainer may allow the CI to be executed, which in turn triggers the `tf-m-static` job. This is exactly the same CI workflow as for TF-A. In case of failure, the patch cannot be merged into the stable branch. The tf-m-static triggers many more jobs as seen in the picture below
 
 ![Alt text](images/tf-m-cppcheck.png "Trigger flow")
 
@@ -411,12 +404,10 @@ In case the nightly job fails, an email notification is sent through the mailing
 
 ## The TF Jenkins Job Builder (JJB) configs
 
-The TF project uses yaml files to define Jenkins jobs (JJB) https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section 
+The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
 
 ```
-.
-.
-.
+...
 	triggers:	
 	- gerrit:	
 	server-name: review.trustedfirmware.org
@@ -430,11 +421,12 @@ The TF project uses yaml files to define Jenkins jobs (JJB) https://docs.opensta
       		branches:
         		- branch-compare-type: PLAIN
           		branch-pattern: integration
+...
 ```
 
 ## JJBs and Jenkins Jobs
 
-JJB defines the behaviour of a Job through a YAML file, where Jenkins use these to create jobs (it is similar to Class and Object concepts in Object Oriented Programming). For example this is JJB of TF-A L1 trigger https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-gerrit-tforg-l1.yaml which is instanciated at  https://ci.trustedfirmware.org/job/tf-gerrit-tforg-l1/. Similar pattern applies for the rest of the JJB files.
+JJB defines the behaviour of a Job through a YAML file, where Jenkins use these to create jobs (it is similar to Class and Object concepts in Object Oriented Programming). For example this is JJB of TF-A Level1 trigger: https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-gerrit-tforg-l1.yaml which is instanciated at  https://ci.trustedfirmware.org/job/tf-gerrit-tforg-l1/. Similar pattern applies for the rest of the JJB files.
 
 ## Calling CI scripts from JJB jobs
 
@@ -449,13 +441,13 @@ In general, Jenkins jobs call scripts, the latter do the corresponding task. For
 
 ![Alt text](images/tf-A-flow.png "TF-A flow")
 
-Where builders.sh is just a setup script (located at TF-A jobs repo) that finally calls run_local_ci.sh script located CI scripts repo, which is the entrypoint of the script execution. The run_local_ci.sh in turn calls others scripts that finally builds the package.
+Where builders.sh is just a setup script (located at TF-A jobs repo) that finally calls run_local_ci.sh script located CI scripts repo, which is the entrypoint of the script execution. The run_local_ci.sh in turn calls others scripts that finally build the package.
 
 # CI Scripts overview
 
 ## TF-A CI scripts overview
 
-The TF-A CI repository https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/ contains several folders and scripts for different purposes but we will not describe each one. Instead we will overview build package operation. Building a package means building (compiling) a specific platform with certain build parameters and post-build setup tasks, both indicated in a single test configuration (string or filename). The  operation is depicted in the following diagram
+The TF-A CI repository https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/ contains several folders and scripts for different purposes but we will not describe each one. Instead we will overview build package operation. Building a package means building (compiling) a specific platform with certain build parameters and post-build setup tasks, both indicated in a single test configuration (string or filename). The  operation is depicted in the following diagram:
 
 ![Alt text](images/Test-configuration.png "Test configuration")
 
@@ -605,19 +597,20 @@ Ultimately, the job.yaml file above is the LAVA job definition, which contains t
 The [LAVA instance](https://tf.validation.linaro.org) for the Trusted Firmware project is set up in Linaro Harston LAB. It consists of lava-master running on a hosted bare metal server, lava-dispatcher running on the same server. Additional dispatchers are deployed using Raspberry Pi 4 hardware. Note that this is required by certain classes of hardware not being differentiable before the OS boots, therefore a single device per dispatcher allows addressing these devices via an unique dispatcher (per device).
 
 TF LAVA instance settings are stored in salt and ansible repositories:
-* Salt repository: https://git.linaro.org/lava/lava-lab.git/ 
+
+* Salt repository: [https://git.linaro.org/lava/lava-lab.git](https://git.linaro.org/lava/lava-lab.git)
 * Ansible repositories:
-   * https://git.linaro.org/lab-cambridge/ansible-lab.git/
-   * https://git.linaro.org/lab-cambridge/lab-dns.git/
-   * https://git.linaro.org/lab-cambridge/lab-dhcp.git/
+    * [https://git.linaro.org/lab-cambridge/ansible-lab.git](https://git.linaro.org/lab-cambridge/ansible-lab.git)
+    * [https://git.linaro.org/lab-cambridge/lab-dns.git](https://git.linaro.org/lab-cambridge/lab-dns.git)
+    * [https://git.linaro.org/lab-cambridge/lab-dhcp.git](https://git.linaro.org/lab-cambridge/lab-dhcp.git)
 
 ## TF LAVA instance replication
 
-TF instance partially relies on Linaro infrastructure. Linaro’s login service (based on LDAP) is used for users authentication and logging into the TF LAVA instance. Therefore it’s not possible to replicate identical LAVA instance accounts outside of Linaro’s infrastructure. Apart from that, all configurations are stored in salt or ansible repositories. Replicating the remaining part of the instance can be done using salt and ansible tools with a new set of inventory variables.
+TF instance partially relies on Linaro infrastructure. Linaro’s login service (based on LDAP) is used for users authentication and logging into the TF LAVA instance. Therefore it’s not possible to replicate identical LAVA instance accounts outside of Linaro’s infrastructure. Apart from that, all configurations are stored in Salt or Ansible repositories. Replicating the remaining part of the instance can be done using Salt and Ansible tools with a new set of inventory variables.
 
-Before an instance is ready various ansible playbooks need to be run and, for LAVA set ups, salt needs to be run.
+Before an instance is ready various Ansible playbooks need to be run and, for LAVA setups, Salt needs to be run.
 
-For ansible, you need to go on deb-ansible host (ssh root@192.168.128.15). As root:
+For Ansible, you need to go on deb-ansible host (`ssh root@192.168.128.15`). As root:
 
 ```
 	# (cd /srv/lava-lab; git pull)
@@ -627,36 +620,37 @@ For ansible, you need to go on deb-ansible host (ssh root@192.168.128.15). As ro
 
 The following playbooks are used to configure all the relevant parts:
 
-* lab_sssd_auth.yml file: enable LDAP authentication
-* lab_snmp_enable.yml file:  enable SNMP, and non-free/contrib apt sources (needed for working SNMP set up with APC PDUs )
-* lab_docker.yml file: install docker apt repository and docker service itself
-* lab_aws_client.yml file: enable AWS authentication with AWS to preload docker images
-* lab_lava_repo.yml file: add LAVA apt repository
-* dhcp_tf.yml file: for the static leases and general DHCP server configuration
+* `lab_sssd_auth.yml`: enable LDAP authentication
+* `lab_snmp_enable.yml`: enable SNMP, and non-free/contrib apt sources (needed for working SNMP set up with APC PDUs)
+* `lab_docker.yml`: install docker apt repository and docker service itself
+* `lab_aws_client.yml`: enable AWS authentication with AWS to preload docker images
+* `lab_lava_repo.yml`: add LAVA apt repository
+* `dhcp_tf.yml`: for the static leases and general DHCP server configuration
 
-Installing LAVA ( worker and master ) is a manual process. After that, the lava-lab.yml file takes care of setting up the correct device dictionaries, device types and health checks as configured in the separate [lava-lab repository](https://git.linaro.org/lava/lava-lab.git).
+Installing LAVA (worker and master) is a manual process. After that, the `lava-lab.yml` file takes care of setting up the correct device dictionaries, device types and health checks as configured in the separate [lava-lab repository](https://git.linaro.org/lava/lava-lab.git).
 
-Until the salt migration to ansible is complete you will need to go on tf-master.tflab host (ssh root@10.88.16.10). As root:
+Until the Salt migration to Ansible is complete you will need to go on `tf-master.tflab` host (`ssh root@10.88.16.10`). As root:
 
 ```
 	# (cd /srv/lava-lab; git pull)
 	# salt ‘*’ state.highstate
 ```
 
-Note: on a brand new installation, you will need to run the ‘salt’ command twice. It’s due to an ordering problem in the salt state configuration. It will be fixed by the ansible migration.
+Note: on a brand new installation, you will need to run the `salt` command twice. It’s due to an ordering problem in the Salt state configuration. It will be fixed by the Ansible migration.
 
 ## LAVA Master
 
-LAVA Master and dispatchers run the Debian distribution (at the time of writing, Debian 10 Buster). LAVA packages are installed from apt.lavasoftware.org repository. On top of the basic installation, LAB specific configuration is applied with ansible.
-Note: the installation of lava-server is a manual process (and still a work in progress), while other configurations are automated and described in the ansible playbooks above.
+LAVA Master and dispatchers run the Debian distribution (at the time of writing, Debian 10 Buster). LAVA packages are installed from `apt.lavasoftware.org` repository. On top of the basic installation, LAB specific configuration is applied with Ansible.
+Note: the installation of lava-server is a manual process (and still a work in progress), while other configurations are automated and described in the Ansible playbooks above.
 
 ## LAVA Dispatchers
 
 TF instance uses 2 types of dispatchers:
+
 * x86 dispatcher running on the same hardware as LAVA master. This dispatcher hosts Fast Models (FVP), QEMU, and Juno devices.
 * Arm dispatchers running on Raspberry Pi 4 hardware. This dispatcher hosts MPS2 and Musca B1 devices.
 
-LAVA dispatchers setup is described in the LAVA documentation: https://lava.readthedocs.io/en/latest/admin/advanced-tutorials/deploying-rpi4b-as-worker/ 
+LAVA dispatchers setup is described in the LAVA documentation: [https://lava.readthedocs.io/en/latest/admin/advanced-tutorials/deploying-rpi4b-as-worker/](https://lava.readthedocs.io/en/latest/admin/advanced-tutorials/deploying-rpi4b-as-worker/).
 
 ## Upgrades
 
@@ -664,7 +658,7 @@ Upgrades of LAVA software are performed after each LAVA release. All dispatchers
 
 ## LAVA instance changes
 
-All the changes are done by the LAB staff. They should be requested as Jira tickets (https://projects.linaro.org/secure/CreateIssue.jspa) with the following fields:
+All the changes are done by the Linaro Lab staff. They should be requested as [Jira tickets](https://linaro.atlassian.net/jira/software/c/projects/STG/boards/94) with the following fields:
 
 * Project: LSS (LAB & System Software)
 * Type: Ticket
@@ -672,6 +666,7 @@ All the changes are done by the LAB staff. They should be requested as Jira tick
 * Client Stakeholder: Trusted Firmware
 
 Most common cases where ticket is required include:
+
 * Adding new device to the LAVA instance
 * Changing firmware on the boards that require manual action
 * Adding or lifting access limitations
@@ -697,10 +692,10 @@ More details on Collaborate page: https://collaborate.linaro.org/display/CTT/Jun
 
 ### Peripherals
 
-Serial: Connected to serial console.
-Power: 
-Ethernet: Both the front and the back interfaces need to be connected.
-Storage: SSD and USB stick (for boot image).
+* Serial: Connected to serial console.
+* Power: 
+* Ethernet: Both the front and the back interfaces need to be connected.
+* Storage: SSD and USB stick (for boot image).
 
 ### Deployment
 
@@ -711,19 +706,20 @@ After various iterations of deployment methods, the current method is loading a 
 The most common issue with Juno is broken PDU ports. The ports get stuck in ON mode so the board never reboots and can thus not interrupt the boot loader.
 Another common issue is "Failed to erase old recovery image" which is generally an issue with the SD card. It is solved as follows:
 
-1. Take brand new SD card and a root/sudo user on your SD reader capable *nix device
-1. Run "parted /dev/&lt;diskID>
+1. Take brand new SD card
+1. Use a root/sudo user to run following commands on your SD reader capable *nix device
+1. Run `parted /dev/DISK_ID`
 1. mklabel msdos
 1. mkpart
-   1. primary
-   1. fat16
-   1. 1M
-   1. 2G
+    1. primary
+    1. fat16
+    1. 1M
+    1. 2G
 1. exit parted
-1. mkfs.fat16 /dev/&lt;diskID> -n JUNO&lt;details>
+1. `mkfs.fat16 /dev/DISK_ID -n JUNO<details>`
 1. Download the recovery image from a health check
-1.Unpack and copy contents to SD card.
-1. Put a new card in a Juno device and run a health check. It might have umount issues on the first try. If so, try again.
+1. Unpack and copy contents to SD card.
+1. Put a new card in a Juno device and run a health check. It might have `umount` issues on the first try. If so, try again.
 
 ## MPS2
 
@@ -731,15 +727,11 @@ More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MPS
 
 ### Peripherals
 
-Serial: Connected to serial console or usb serial connected to host.
-
-Power: 12v
-
-Ethernet: One port connected.
-
-USB: Mini usb connected to host.
-
-Storage: sd card in an [SD Mux](https://www.linux-automation.com/en/).
+* Serial: Connected to serial console or usb serial connected to host.
+* Power: 12v
+* Ethernet: One port connected.
+* USB: Mini usb connected to host.
+* Storage: SD card in an [SD Mux](https://www.linux-automation.com/en/).
 
 ### Deployment
 
@@ -753,7 +745,7 @@ In order to use SDMux, the host must have [sd-mux-ctrl](https://wiki.tizen.org/S
 
 ### Troubleshooting
 
-We found that the sd card containing the boot image easily got corrupted and that would take the board offline until manual intervention is achieved.
+We found that the SD card containing the boot image easily got corrupted and that would take the board offline until manual intervention is made.
 
 This is mitigated with use of the SDMux and there have been few known issues since.
 
@@ -765,19 +757,20 @@ More details in Collaborate page: https://collaborate.linaro.org/display/CTT/Mus
 
 ### Flashing the device for the first time
 
-Flashing instructions are available on [ARM community pages](https://community.arm.com/developer/tools-software/oss-platforms/w/docs/552/musca-b1-firmware-update-qspi-eflash-boot-recovery). It's only possible to run the Windows version of the instructions. Currently LAB uses QSPI firmware version 3.4.
+Flashing instructions are available on [ARM community pages](https://community.arm.com/developer/tools-software/oss-platforms/w/docs/552/musca-b1-firmware-update-qspi-eflash-boot-recovery). It's only possible to run the Windows version of the instructions. Currently the Lab uses QSPI firmware version 3.4.
 
-firmware: [DAPLink_QSPI_V34.bin](https://collaborate.linaro.org/download/attachments/132161009/DAPLink_QSPI_V34.bin?version=1&modificationDate=1596628064578&api=v2)
+Firmware: [DAPLink_QSPI_V34.bin](https://collaborate.linaro.org/download/attachments/132161009/DAPLink_QSPI_V34.bin?version=1&modificationDate=1596628064578&api=v2)
 
-After initial flashing is done, the rest of the setup can be done with a Linux host. Some commands for DAPLink can be found on [ARMmbed Github repository](https://github.com/ARMmbed/DAPLink/blob/master/docs/MSD_COMMANDS.md).
+After initial flashing is done, the rest of the setup can be done with a Linux host. Some commands for DAPLink can be found in [DAPLink docs](https://github.com/ARMmbed/DAPLink/blob/master/docs/MSD_COMMANDS.md).
 
 ### Turn on automation
 
-Boards need to have the 'automation' enabled. This is done by writing the 'auto_on.cfg' file to the USB mass storage 'MUSCA_B' while pressing nSRST button.
+Boards need to have the "automation" feature enabled in DAPLink. This is done by writing the `auto_on.cfg` file to the USB mass storage 'MUSCA_B' while pressing nSRST button.
+See DAPLink docs above for more information.
 
 ### Turn auto power on
 
-There is a hidden command in the v3.4 firmware: Auto power can be turned on by writing 'auto_pwr.cfg' to the USB mass storage 'MUSCA_B' while pressing nSRST button. Turning auto power off can be done by writing 'hard_pwr.cfg' to the USB mass storage 'MUSCA_B' while pressing the nSRST button.
+There is a hidden command in the v3.4 firmware: Auto power can be turned on by writing `auto_pwr.cfg` to the USB mass storage 'MUSCA_B' while pressing nSRST button. Turning auto power off can be done by writing `hard_pwr.cfg` to the USB mass storage 'MUSCA_B' while pressing the nSRST button.
 
 ## Adding Boards to LAVA
 
@@ -787,7 +780,7 @@ There is a hidden command in the v3.4 firmware: Auto power can be turned on by w
    * See section "Enabling new device in LAVA"
 * Getting your physical board installed in Linaro's Cambridge Lab
 
-Once your device type is supported in LAVA, and the LAVA software deployed to the Lab, you are ready to request that your boards be installed in Linaro's Cambridge Lab.
+Once your device type is supported in LAVA, and the needed LAVA version is deployed to the Lab, you are ready to request that physical boards be installed in the Lab.
 
 ## Hardware Requirements
 
@@ -802,7 +795,7 @@ Basic requirements:
    * The Lab uses PDU switches to power cycle boards when needed
 * The board must have a uniquely identifiable serial port
    * If the board provides a 9 pin D-SUB, a suitable FTDI serial converter will provide this
-   * If the board provides a USB serial port, the Serial Number attribute of the USB port must be unique. If not, it may be possible to install a RaspberryPi dispatcher to isolate the board from the main Lab.
+   * If the board provides a USB serial port, the Serial Number attribute of the USB port must be unique. If not, it may be possible to install a RaspberryPi dispatcher to isolate the board from the rest.
 * The board must be able to be flashed in a reliable manner using automated tools
    * No button presses or manual steps are permitted
    * If your device boots via an SDcard, an SDmux can be used to reflash the board while it is powered off.
@@ -817,10 +810,10 @@ Once your board is supported in the LAVA software, and your board meets the Hard
    * Issue Type: Ticket
    * Click Next
 1. Fill in the required details
-   * Summary: You should fill in the "Summary" with a snappy title. I've started to prefix my titles with "TF CI: " to help identify them in the list of issues.
+   * Summary: You should fill in the "Summary" with a descriptive title. It may be a good idea to prefix titles with "TF CI: " to help identify them in the list of issues.
    * Components: "LAB"
    * Client Stakeholder: "Trusted-Firmware"
-   * Validation Server: "validation.linaro.org"
+   * Validation Server: "tf.validation.linaro.org"
    * Labels: "TrustedFirmware"
 1. Fill in the Description
    * You will need to fill in the Description, even if you think the title is sufficient. Provide enough overview detail so the request is clear to understand by management, but make sure you include all the technical details you need for the support engineer to install your board.
@@ -832,15 +825,15 @@ Once your board is supported in the LAVA software, and your board meets the Hard
 
 # SQUAD
 
-SQUAD is a database storing test results from LAVA jobs and providing a dashboard where results can be compared across CI jobs and metrics generated.
+[SQUAD](https://github.com/Linaro/squad) is a frontend to LAVA, featuring a proxy for job submission, a database storing test results from LAVA jobs, and a dashboard where results can be compared across CI jobs and metrics generated.
 
-The top level SQUAD project is here:
+The top level SQUAD project for TrustedFirmware is here:
 
 	https://qa-reports.linaro.org/tf/
 
 ## TF-A
 
-TF-A has several SQUAD project, the most interesting is tf-main:
+TF-A has several SQUAD projects, the most interesting is `tf-main`:
 
 	https://qa-reports.linaro.org/tf/tf-main/
 
@@ -878,9 +871,9 @@ The staging setup or “next” is meant to be used for developers to be able to
 Staging environments have been set up in the next/* namespace location: 
 	https://git.trustedfirmware.org/next.
 
-The next/* namespace is mirrored from production. The only repository that is not mirrored is the tf-<x>-job-configs repo. All other repositories are mirrored and as such the user should branch out from master.
+The next/* namespace is mirrored from production. The only repository that is not mirrored is the `tf-*-job-configs` repos. All other repositories are mirrored and as such the user should branch out from master.
 
-Users need to be placed in the `[trusted-firmware-staging-approvers](https://review.trustedfirmware.org/admin/groups)` Gerrit group. This is done by creating a ticket, [please see instructions at the bottom of the Open CI wiki page](https://developer.trustedfirmware.org/w/collaboration/openci/). This group allows users to have submit and merge (+2) writes to all repositories under the next/* namespace, without needing any approval from a peer.
+Users need to be placed in the [`trusted-firmware-staging-approvers`](https://review.trustedfirmware.org/admin/groups) Gerrit group. This is done by creating a ticket, [please see instructions at the bottom of the Open CI wiki page](https://developer.trustedfirmware.org/w/collaboration/openci/). This group allows users to have submit and merge (+2) writes to all repositories under the next/* namespace, without needing any approval from a peer.
 
 Due to the nature of allowing users to self approve their submit/merge changes into Gerrit, it is important that users understand that it triggers Jenkins jobs and as such care has to be taken when deploying those changes.
 
@@ -888,7 +881,7 @@ Basic rules all developers should follow:
 
 * Gerrit triggers and comments have to be **disabled** in the job. We do not want the staging server sending comments back to Gerrit reviews.
 * Job triggers have to be **manual** only. Timed events are not allowed, not unless it is being used for testing.
-* Developers **must** use their own job config, and not use master. Users must copy the job config, append your username and work on that config.
+* Developers **must** use their own job config, and not use master. Users must copy the job config, append their username and work on that config.
 
 ## How to setup basic next environment
 
@@ -960,9 +953,9 @@ Other repositories, that are used inside the jobs, can be copied to other server
 
 ![Alt text](images/tf-a-ci-scripts.png "TF-A scripts flow")
 
-Similar workflow should be used when migrating changes to ci/tf-a-scripts and ci/tf-a-job-configs repositories. Changes in the next/* should be sent for review against repositories in ci/* path. 
+Similar workflow should be used when migrating changes to ci/tf-a-scripts and ci/tf-a-job-configs repositories. Changes in the `next/*` should be sent for review against repositories in the `ci/*` path.
 
-As noted above, changes in next/tf-a-job-configs can be self approved and merged. Changes in user repositories can be pushed without reviews.
+As noted above, changes in `next/tf-a-job-configs` can be self approved and merged. Changes in user repositories can be pushed without reviews.
 
 # Uploading files into shared repository
 
@@ -1055,9 +1048,9 @@ The project is being hosted at https://gitlab.com/Linaro/tuxput .If you run into
 
 # FVP Docker Images
 
-LAVA is used to launch FVP (fast) models based on CI artifacts. In turn, models are launched
+LAVA is used to launch FVP (Fast Models) based on CI artifacts. In turn, models are launched
 inside a containerized environment. In other words, models are **not** run from a bare metal
-host system, but inside containers on a LAVA host, where these are launched by
+host system, but inside containers on a LAVA dispatcher, where these are launched by
 LAVA using CI artifacts and configured model parameters. In case a new **FVP Docker Image** is required
 at the CI,  a contributor needs to download the corresponding FVP model tarball, the installer, and upload it 
 to a CI private repository, then a CI job would automatically generate the docker image.
@@ -1069,7 +1062,7 @@ FVP model are commonly available at these sites:
 * [Silver FM000](https://silver.arm.com/browse/FM000)
 * [Arm Ecosystem Models](https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms/arm-ecosystem-models)
 
-Download the required model, i.e `FVP_Base_RevC-2xAEMvA_11.15_14.tgz`. Once download is completed, install [tuxput](#tuxput-installation) 
+Download the required model, e.g. `FVP_Base_RevC-2xAEMvA_11.15_14.tgz`. Once download is completed, install [tuxput](#tuxput-installation)
 package and run the following command using your personal token
 
 ```
