@@ -48,6 +48,24 @@
     + [Flashing the device for the first time](#flashing-the-device-for-the-first-time)
     + [Turn on automation](#turn-on-automation)
     + [Turn auto power on](#turn-auto-power-on)
+  * [STM32L562E-DK](#stm32l562e-dk)
+    + [Peripherals](#peripherals-1)
+    + [Deployment](#deployment-1)
+  * [NXP LPC55s69 Platform](#nxp-lpc55s69-platform)
+    + [Peripherals](#peripherals-1)
+    + [Deployment](#deployment-1)
+  * [Cypress Platform CY8CKIT-064S0S2-4343W](#cypress-platform-cy8ckit-064s0s2-4343w)
+    + [Peripherals](#peripherals-1)
+    + [Deployment](#deployment-1)
+    + [Troubleshooting](#troubleshooting-1)
+  * [Asurada Chromebook](#asurada-chromebook)
+    + [Peripherals](#peripherals-1)
+    + [Deployment](#deployment-1)
+    + [Troubleshooting](#troubleshooting-1)
+  * [Lazor Chromebook](#lazor-chromebook)
+    + [Peripherals](#peripherals-1)
+    + [Deployment](#deployment-1)
+    + [Troubleshooting](#troubleshooting-1)
   * [Adding Boards to LAVA](#adding-boards-to-lava)
   * [Hardware Requirements](#hardware-requirements)
   * [How to get your board installed in the Linaro Cambridge Lab](#how-to-get-your-board-installed-in-the-linaro-cambridge-lab)
@@ -302,7 +320,7 @@ All the above jobs rely on downstream jobs:
 * **tf-main:** multijob, TF-A and TF-A-tests
 * **tf-coverity:** freestyle, runs coverity scan
 * **tf-static-checks:** runs Arm static code checks
-* **tf-ci-gateway:** split a test group (TEST_GROUPS) into multiple ‘.test’ files, each representing a test description (TEST_DESC)
+* **tf-a-ci-gateway:** split a test group (TEST_GROUPS) into multiple ‘.test’ files, each representing a test description (TEST_DESC)
 * **tf-a-builder:** freestyle, builds the package and launch a LAVA job
 
 Any job can be triggered manually by authorized users. Gerrit jobs are those triggered on behalf of gerrit actions, either ‘Allow +1’ or ‘Allow +2’, and track a particular project, either TF-A https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ or TF-A tests https://git.trustedfirmware.org/TF-A/tf-a-tests.git/. The following screenshot shows an example of the `tf-gerrit-tforg-l1` job at the Jenkins instance:
@@ -339,13 +357,13 @@ Results from those LAVA executed jobs on behalf of the corresponding gerrit patc
 
 ![Alt text](images/TF-code-review-Bot.png "Review Bot")
 
-In case of a job failure, it is more likely that you want to investigate the issue starting at the Gerrit job, then following the CI job chain starting from the trigger job (top-bottom approach): 1. analyze results from the Gerrit job, 2. use the report table produced by each tf-ci-gateway job, 3. the tf-a-builder job and finally 4. the tf-a-builder’s console log. Looking at the following screenshots should help clarifying this concept.
+In case of a job failure, it is more likely that you want to investigate the issue starting at the Gerrit job, then following the CI job chain starting from the trigger job (top-bottom approach): 1. analyze results from the Gerrit job, 2. use the report table produced by each tf-a-ci-gateway job, 3. the tf-a-builder job and finally 4. the tf-a-builder’s console log. Looking at the following screenshots should help clarifying this concept.
 
 1. Gerrit job level:
 
 ![Alt text](images/Jenkins-153.png "Gerrit job")
 
-2. tf-ci-gateway level:
+2. tf-a-ci-gateway level:
 
 ![Alt text](images/Jenkins-1174.png "Gateway level")
 
@@ -772,6 +790,148 @@ See DAPLink docs above for more information.
 
 There is a hidden command in the v3.4 firmware: Auto power can be turned on by writing `auto_pwr.cfg` to the USB mass storage 'MUSCA_B' while pressing nSRST button. Turning auto power off can be done by writing `hard_pwr.cfg` to the USB mass storage 'MUSCA_B' while pressing the nSRST button.
 
+## STM32L562E-DK
+
+### Peripherals
+
+* Serial: Connected to serial console or usb serial connected to host.
+* Power: ST-LINK, USB VBUS or external sources
+* Ethernet:
+* USB: USB Type-C
+* Storage: microSD card
+
+### Deployment
+
+An overview of this board, as well as a Programming and Debugging guide can be found on the [zyphyrproject](https://docs.zephyrproject.org/2.7.0/boards/arm/stm32l562e_dk/doc/index.html) documentation page.
+
+## NXP LPC55s69 Platform
+
+### Peripherals
+
+* Serial: UART and SPI port bridging from LPC55S69 target to USB via the onboard debug probe.
+* Power: MicroUSB connector
+* Ethernet: 
+* USB: 1 USB Full-Speed connector, 1 USB Hi-Speed connector, 1 USB Debug Probe connector, 1 USB Power connector
+* Storage: Micro SD card slot (4-bit SDIO)
+
+### Deployment
+
+The [NXP Getting Started Guide](https://www.nxp.com/document/guide/getting-started-with-the-lpc55s69-evk-evaluation-board:GS-LPC55S69-EVK) can be used to build and run software.
+
+## Cypress Platform CY8CKIT-064S0S2-4343W
+
+### Peripherals
+
+* Serial: debugger with USB-UART and USB-I2C bridge functionality
+* Power: MicroUSB connector
+* Ethernet: 
+* USB: micro-B connector for USB device interface for PSoC 64 MCU
+* Storage: microSD Card holder
+
+### Deployment
+
+The board specification can be found [here](https://www.infineon.com/dgdl/Infineon-CY8CKIT-064S0S2-4343W_Kit_Guide-UserManual-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0f02dd6d1a1e).
+
+For Programming and Debugging, the onboard KitProg3 can be used. It is a programmer/debugger with USB-UART and USB-I2C funcionality. For details on the KitProg3 functionality see the [KitProg3 User Guide](https://www.infineon.com/dgdl/Infineon-KitProg3_User_Guide-UserManual-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0f01221f1853&utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-dev_kit).
+
+### Troubleshooting
+
+To Program/Debug connect the board to thh PC using the USB cable. It will enumerate as a USB Composite Device if you are connecting to your PC for the first time. 
+
+KitProg3 operates in either CMSIS-DAP Bulk mode, or DAPLink mode (default). In SMSIS-DAP Bulk mode, two UART interfaces are supported. The status LED (Yellow) is always ON in CMSIS-DAP Bulk mode and ramping at a rate of 2 Hz in DAPLink mode. Press and release the Mode select button (SW3) to switch between these modes.
+
+See the [KitProg3 User Guide](https://www.infineon.com/dgdl/Infineon-KitProg3_User_Guide-UserManual-v01_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0f01221f1853&utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-dev_kit) for more troubleshooting instructions.
+
+## Asurada Chromebook
+
+### Peripherals
+
+* Serial: Connected to serial console via [SusyQable](https://www.sparkfun.com/products/retired/14746)
+* Power: 
+* Ethernet: 
+* USB: 1 USB-C port for debug, 1 USB-C port for charging
+* Storage:
+
+### Deployment
+
+The Asurada Chromebook should work out of the box; however there are [Chromium OS docs](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/developer_mode.md) for devoloper mode, as well as [Closed Case Debug docs](https://chromium.googlesource.com/chromiumos/third_party/hdctools/+/HEAD/docs/ccd.md).
+
+If you wish to flash a debug image you can use the following steps.
+
+For CCD UART and flashing access, download the contents of this [repository](https://chromium.googlesource.com/chromiumos/platform/standalone-hdctools/+/refs/heads/master/) which contains scripts that automatically download and build required pieces.
+
+1. If these are installed on your machine, connect to the DUT via the SusyQable
+    1. Start the servo daemon via `servod -b asurada`. Ensure that the SusyQable is in the correct orientation described in the trouble shooting section.
+    1. Once the daemon has started leave it running in the background at all times for other steps.
+1. Next you may need to "unlock" the CCD on the device, which is a one-time manual step to be done on each device.
+    1. Connect to the UART of the "Cr50" chip in the device
+      1. Run `dut-control cr50_uart_pty` which should display the PTY number (such as `cr50_uart_pty:/dev/pts/17`)
+      1. Use your terminal emulator of choice to connect to the PTY (e.g. `minicom -w -D /dev/pts/17`)
+    1. Once connected, type `ccd open`
+    1. The device may ask you to press the power button several times in a 5 minute window, whenever it says "press PP button now!" quickly press the power button.
+    1. When the process is completed enter `ccd reset factory`
+1. With Servod running and CCD unlocked connect to the main SoC Uart
+    1. Use `dut-control cpu_uart_pty` to find out the PTY number
+1. Use `flashrom -n -w <image file> -p raiden_debug_spi:target=AP` to flash an image file to the device
+1. To replace an image with a different build you need the [cbfstool utility](https://review.coreboot.org/plugins/gitiles/coreboot/+/refs/heads/master)
+    1. navigate to util/cbfstool, and run `make`
+    1. To replace the image remove the existing bl31.elf file
+      1. `cbfstool <image file> remove -n fallback/bl31`
+    1. Re-add a different version
+      1. `cbfstool <image file> add-payload -n fallback/bl31 -f <new bl31.elf file>`
+
+### Troubleshooting
+
+When connecting to the Asurada Chromebook via the SusyQable, the DBG symbol should be in a upward position in the left USB-C port.
+
+For more Chromebook devices you can [look here](https://chromeos.guide/chromeosdevices). Currently the Asurada Chromebook is not on this list.
+
+## Lazor Chromebook
+
+### Peripherals
+
+* Serial: Connected to serial console via [SusyQable](https://www.sparkfun.com/products/retired/14746)
+* Power: 
+* Ethernet: 
+* USB: 1 USB-C port for debug, 1 USB-C port for charging
+* Storage: 32 GB or 128 GB, and expandable storage via SD/MicroSD
+* Ram: 4 GB or 8 GB
+* CPU: Snapdragon 7c
+
+### Deployment
+
+The Lazor Chromebook should work out of the box; however there are [Chromium OS docs](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/developer_mode.md) for devoloper mode, as well as [Closed Case Debug docs](https://chromium.googlesource.com/chromiumos/third_party/hdctools/+/HEAD/docs/ccd.md).
+
+If you wish to flash a debug image you can use the following steps.
+
+For CCD UART and flashing access, download the contents of this [repository](https://chromium.googlesource.com/chromiumos/platform/standalone-hdctools/+/refs/heads/master/) which contains scripts that automatically download and build required pieces.
+
+1. If these are installed on your machine, connect to the DUT via the SusyQable
+    1. Start the servo daemon via `servod -b trogdor`. Ensure that the SusyQable is in the correct orientation described in the trouble shooting section.
+    1. Once the daemon has started leave it running in the background at all times for other steps.
+1. Next you may need to "unlock" the CCD on the device, which is a one-time manual step to be done on each device.
+    1. Connect to the UART of the "Cr50" chip in the device
+      1. Run `dut-control cr50_uart_pty` which should display the PTY number (such as `cr50_uart_pty:/dev/pts/17`)
+      1. Use your terminal emulator of choice to connect to the PTY (e.g. `minicom -w -D /dev/pts/17`)
+    1. Once connected, type `ccd open`
+    1. The device may ask you to press the power button several times in a 5 minute window, whenever it says "press PP button now!" quickly press the power button.
+    1. When the process is completed enter `ccd reset factory`
+1. With Servod running and CCD unlocked connect to the main SoC Uart
+    1. Use `dut-control cpu_uart_pty` to find out the PTY number
+1. Use `flashrom -n -w <image file> -p raiden_debug_spi:target=AP` to flash an image file to the device
+1. To replace an image with a different build you need the [cbfstool utility](https://review.coreboot.org/plugins/gitiles/coreboot/+/refs/heads/master)
+    1. navigate to util/cbfstool, and run `make`
+    1. To replace the image remove the existing bl31.elf file
+      1. `cbfstool <image file> remove -n fallback/bl31`
+    1. Re-add a different version
+      1. `cbfstool <image file> add-payload -n fallback/bl31 -f <new bl31.elf file>`
+
+### Troubleshooting
+
+When connecting to the Lazor Chromebook via the SusyQable, the DBG symbol should be in a downward position in the left USB-C port.
+
+More board info can be [found here](https://chromeos.guide/chromeosdevices/acerlazor).
+
 ## Adding Boards to LAVA
 
 "Adding a board to LAVA" can mean more than one thing, for example:
@@ -1101,7 +1261,6 @@ The general steps/guidelines for getting hardware placed into the lab is as foll
 * Delivery of all items (except the hardware) to the OpenCI development team will help them to size the effort and more accurately plan the team's activity pipeline.
 * Once adding the device to the lab is approved through the OpenCI triage prioritization efforts, the hardware can be sent to the lab for installation.
    * Note that if multiple vendors are requesting to place platforms into the OpenCI or multiple platforms into the OpenCI, the requests shall be prioritized by the TrustedFirmware Board.
-
 
 
 
