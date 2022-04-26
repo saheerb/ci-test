@@ -124,7 +124,7 @@ sudo apt install git-review
 ```
 (This may install any required dependencies automatically.)
 
-* set up your environment using `git config` to get your user.name, user.email, etc.  set up
+* set up your environment using `git config` to get your user.name, user.email, etc. 
 * create your UsersGuide working directory and navigate to it.
 * Back in the Gerrit dashboard for the Users Guide, [found here](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide), click on the `SSH` tab.
 * On this page, copy the git clone example entry found in the `Clone with commit-msg hook` field.  This will be used on your local machine to clone the document that you can edit.
@@ -203,16 +203,18 @@ More details about Gerrit can be found in the upstream documentation:
 
 ## From the maintainer's POV
 
-All CI is done with Jenkins at https://ci.trustedfirmware.org/. There are lots of jobs, so as a first impression, it may seem difficult to follow the CI flow. Section 4, Pipeline description, describes each project’s CI in detail.
+All CI is done with Jenkins at https://ci.trustedfirmware.org/. There are lots of jobs, so as a first impression, it may seem difficult to follow the CI flow. The [Pipeline Description section](#pipeline-description) describes each project’s CI in detail.
 
 ![alt text](images/Jenkins-All.png "Jenkins job")
 
-Each project, TF-A and TF-M, have different CI jobs and scripts hosted in the following repos
+Each project have different CI jobs and scripts hosted in the following repos. For example, TF-A and TF-M are in the list below:
 
-* TF-A CI Jobs https://git.trustedfirmware.org/ci/tf-a-job-configs.git/
-* TF-A CI Scripts https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/
-* TF-M CI Jobs https://git.trustedfirmware.org/ci/tf-m-job-configs.git/
-* TF-M CI Scripts https://git.trustedfirmware.org/ci/tf-m-ci-scripts.git/
+* TF-A CI Jobs [https://git.trustedfirmware.org/ci/tf-a-job-configs.git/](https://git.trustedfirmware.org/ci/tf-a-job-configs.git/) 
+* TF-A CI Scripts [https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/](https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/)
+* TF-M CI Jobs [https://git.trustedfirmware.org/ci/tf-m-job-configs.git/](https://git.trustedfirmware.org/ci/tf-m-job-configs.git/)
+* TF-M CI Scripts [https://git.trustedfirmware.org/ci/tf-m-ci-scripts.git/](https://git.trustedfirmware.org/ci/tf-m-ci-scripts.git/)
+
+To see the full list of CI jobs and scripts repos for all projects in Open CI, navigate here: [https://git.trustedfirmware.org/ci/](https://git.trustedfirmware.org/ci/) 
 
 The job config repositories contain Jenkins Job Definitions, called JJB (Jenkins Job Builders) files. The  CI scripts repositories host scripts that are required for the CI, i.e build scripts, static checks, etc.
 
@@ -234,7 +236,7 @@ LAVA(Linaro Automation and Validation Architecture) provides detailed documentat
 
 ## Supported platforms
 
-TF project support the following platforms in LAVA https://tf.validation.linaro.org/scheduler/device_types
+TF project support the following platforms in LAVA [https://tf.validation.linaro.org/scheduler/device_types](https://tf.validation.linaro.org/scheduler/device_types)
 
 ![alt text](images/LAVA-device-types.png "LAVA Device Types")
 
