@@ -382,8 +382,8 @@ In case of a job failure, it is more likely that you want to investigate the iss
 TF-M jobs are found at https://ci.trustedfirmware.org/ and can be classified depending on the code coverage
 
 * Release job: active during release stage, manually triggered. XL size
-* Nightly job: active everyday to cover latest HEAD; in case of failure, notification is done through the tf-m mailing list. M size
-* Per-patch job: gerrit patch verify before merge. S size
+* Nightly job: active everyday to cover the latest HEAD; in case of failure, notification is done through the tf-m mailing list. M size
+* Per-patch job: gerrit patch verification before merge. S size
 
 Below is a diagram that shows their relationship and the amount of code coverage targeted.
 
@@ -392,23 +392,23 @@ Below is a diagram that shows their relationship and the amount of code coverage
 Jobs can also be classified depending on their specific task:
 
 * Production jobs
-   * tf-m-builds-docs-nightly
-   * tf-m-build-and-test
-   * tf-m-coverity
-   * tf-m-static-checks
-   * tf-m-nightly (scheduled)
-   * tf-m-static (per-patch)
-   * tf-m-build-docs
-   * tf-m-build-config
-   * tf-m-lava-submit
-   * tf-m-cppcheck
-   * tf-m-checkpatch
+    * tf-m-builds-docs-nightly
+    * tf-m-build-and-test
+    * tf-m-coverity
+    * tf-m-static-checks
+    * tf-m-nightly (scheduled)
+    * tf-m-static (per-patch)
+    * tf-m-build-docs
+    * tf-m-build-config
+    * tf-m-lava-submit
+    * tf-m-cppcheck
+    * tf-m-checkpatch
 * Release jobs
-   * tf-m-release (release)
-   * tf-m-code-coverage
+    * tf-m-release (release)
+    * tf-m-code-coverage
 * Infra jobs
-   * tf-m-infra-health
-   * tf-m-build-config-infra-health
+    * tf-m-infra-health
+    * tf-m-build-config-infra-health
 
 ### TF-M Job dependencies
 
@@ -424,7 +424,7 @@ In case the nightly job fails, an email notification is sent through the mailing
 
 ## The TF Jenkins Job Builder (JJB) configs
 
-The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
+The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-a-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
 
 ```
 ...
