@@ -422,6 +422,38 @@ The job tf-m-nigthly is a more extensive job,  triggered everyday and tests the 
 
 In case the nightly job fails, an email notification is sent through the mailing list https://lists.trustedfirmware.org/mailman/listinfo/tf-m-ci-notifications . The maintainer is responsible for looking at the failed errors and identifying the (commit) culprit then reporting it to the developer.
 
+## Code coverage support
+
+Both TF-A and TF-M jobs support performing code coverage analysis. Mechanisms for
+requesting this analysis are different:
+
+* TF-A: There are special test groups which enable code coverage,
+  e.g. `tf-l3-code-coverage`.
+* TF-M: Setting `CODE_COVERAGE_EN` parameter of a job to `TRUE`.
+
+There is a following path to produce a code coverage report:
+
+1. If code coverage is enabled, FVP job in LAVA is run with a special
+coverage/instruction tracing plugin, which at the end of FVP execution
+outputs address of each instruction which was executed. It should be noted
+that as of now, code coverage support relies on this FVP plugin and is
+available only for the FVP targets.
+2. A [custom utility](https://git.trustedfirmware.org/ci/qa-tools.git/)
+post-processes this trace file and converts it into the input format
+for the `lcov` code-coverage tool.
+3. `lcov` is used to generate a code coverage report in the HTML format, which
+is published as an artifact together with other deliverables of a build.
+
+Individual job builds oftentimes cover only a particular configuration (hardware
+platform, testsuite, etc.). Thus, code coverage produced from a single build
+is partial, exercising only a subset of the project code. To address this
+limitation, there is also a support to overlap multiple individual code coverage
+reports to produce a "collective" or "merged" report, better representing
+coverage of the entire project. An "umbrella" CI job (`tf-a-ci-gateway` for
+TF-A, `tf-m-build-and-test` for TF-M) automatically produces a merged report
+if code coverage is enabled and there are 2 or more configurations are built
+by its sub-jobs.
+
 ## The TF Jenkins Job Builder (JJB) configs
 
 The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-a-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
