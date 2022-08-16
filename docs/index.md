@@ -1067,12 +1067,14 @@ Staging environments have been set up in the next/* namespace location:
 
 The next/* namespace is mirrored from production. The only repository that is not mirrored is the `tf-*-job-configs` repos. All other repositories are mirrored and as such the user should branch out from master.
 
-Users need to be placed in the [`trusted-firmware-staging-approvers`](https://review.trustedfirmware.org/admin/groups) Gerrit group. This is done by creating a ticket, [please see instructions at the bottom of the Open CI wiki page](https://developer.trustedfirmware.org/w/collaboration/openci/). This group allows users to have submit and merge (+2) writes to all repositories under the next/* namespace, without needing any approval from a peer.
+Users need to be placed in the [`trusted-firmware-staging-approvers`](https://review.trustedfirmware.org/admin/groups) Gerrit group. Since we use the role-based authorization on both the [`Production`](https://ci.trustedfirmware.org/) and the [`Staging`](https://ci.staging.trustedfirmware.org/) Jenkins, beside the trusted-firmware-staging-approvers Gerrit group, user need to be a member of the [`trusted-firmware-a-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-a-openci-users) GitHub team for the TF-A project, the [`trusted-firmware-m-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-m-openci-users) GitHub team for the TF-M project, the [`trusted-firmware-hafnium-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-hafnium-openci-users) GitHub team, or [`trusted-firmware-mbed-tls-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-mbed-tls-openci-users) Github team for the Mbed-TLS project in order to gain the permission to access the job.
+This is done by creating a ticket, [please see instructions at the bottom of the Open CI wiki page](https://developer.trustedfirmware.org/w/collaboration/openci/). The trusted-firmware-staging-approvers Gerrit group allows users to have submit and merge (+2) writes to all repositories under the next/* namespace, without needing any approval from a peer.
 
 Due to the nature of allowing users to self approve their submit/merge changes into Gerrit, it is important that users understand that it triggers Jenkins jobs and as such care has to be taken when deploying those changes.
 
 Basic rules all developers should follow:
 
+* The job needs to include "tf-a-", "tf-m-", "hafnium-", or "mbedtls-" as a part of the job name for the correct project.
 * Gerrit triggers and comments have to be **disabled** in the job. We do not want the staging server sending comments back to Gerrit reviews.
 * Job triggers have to be **manual** only. Timed events are not allowed, not unless it is being used for testing.
 * Developers **must** use their own job config, and not use master. Users must copy the job config, append their username and work on that config.
