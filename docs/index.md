@@ -1159,10 +1159,11 @@ For those files that are prerequisites for CI execution, i.e. `SCP RAM`, Code Co
 
 ## Tuxput Installation
 
-The `tpcli` command is distributed as part of the `tuxput` python package. To install, run:
+The `tpcli` command is distributed as part of the `tuxput` python package. To
+install the latest version, run:
 
 ```
-$ pip install tuxput
+$ pip install -U tuxput
 ```
 
 ## Upload A File
