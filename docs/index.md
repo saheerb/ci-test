@@ -1187,6 +1187,82 @@ If no errors are seen, the corresponding [CI job](https://ci.trustedfirmware.org
 would detect this new model in the repository and automatically creates the corresponding docker image. This is a cron job
 executed in a daily basis but can be also triggered manually: go to the CI job landing page and just click the 'Build now' icon.
 
+# Non-public build dependencies
+
+TrustedFirmware build process (as run in OpenCI) may require various private
+or not public-available dependencies (this includes dependencies which require
+click-thru license approval before downloading). An example would be proprietary
+toolchains, builds with which should be tested in addition to open-source
+toolchains.
+
+To facilitate use of such build dependencies, the `trustedfirmware-private`
+Tuxput bucket was created. Non-public build dependencies should be uploaded
+in a subdirectory of that bucket, based on their category. We will informally
+call it a sub-bucket below.
+
+An example of sub-bucket is `trustedfirmware-private/armclang`, which is used
+to store "Arm Compiler for Embedded" toolchains (also known as Arm Clang).
+
+## Managing Arm Clang toolchains
+
+Arm Clang toolchains can be downloaded from the following link:
+[https://developer.arm.com/downloads/view/ACOMPE](https://developer.arm.com/downloads/view/ACOMPE),
+which requires active Arm Developer site account, multi-factor authentication,
+compliance with restrictions and license terms acceptance.
+
+For usage in Ci, Arm Clang toolchain packages should be stored in
+`trustedfirmware-private/armclang` sub-bucket. File naming convention is to
+use `DS500-*` based package identifier (this is the original file naming scheme
+of older releases as downloaded from the Arm site, even thought newer releases
+may have changed to other default file name pattern).
+
+As an example, if the download site shows the information like:
+```
+Arm Compiler 6.13 for Linux 64-bit
+Name: DS500-BN-00026-r5p0-15rel0
+Description: Arm Compiler 6.13 for Linux 64-bit
+Filename: ARMCompiler6.13_standalone_linux-x86_64.tar.gz
+```
+then you would download file `ARMCompiler6.13_standalone_linux-x86_64.tar.gz`,
+but is expected to rename it to `DS500-BN-00026-r5p0-15rel0.tar.gz` (again,
+these were original toolchain filenames as used in various CI scripts, so
+to keep using them meant preserving consistency).
+
+Then you would upload it to the sub-bucket:
+
+```
+tpcli -t <token> -b trustedfirmware-private https://publish.trustedfirmware.org/upload/armclang/ DS500-BN-00026-r5p0-15rel0.tar.gz
+```
+
+At the time of Docker image build, contents of the `trustedfirmware-private/armclang`
+sub-bucket are fetched in the root directory of the
+[https://git.trustedfirmware.org/ci/dockerfiles.git/tree/](https://git.trustedfirmware.org/ci/dockerfiles.git/tree/)
+checkout. For example, it would be:
+
+```txt
+dockerfiles
+|
++- DS500-BN-00026-r5p0-15rel0.tar.gz
+\- bionic-amd64-tf-a-build
+   |
+   +- build.sh
+   \- Dockerfile
+```
+
+Each Docker image which needs to use a particular toolchain, should
+copy it from the parent directory into the image's directory, using suitable
+commands in its `build.sh` script, e.g.:
+
+```
+cp ../DS500-BN-00026-r5p0-15rel0.tar.gz .
+```
+
+(Note: it should be copy and not move, because other images may refer to the same
+file.)
+
+After that, Dockerfile can refer to the `DS500-BN-00026-r5p0-15rel0.tar.gz` file
+as usual (e.g. in a COPY statement).
+
 # Misc Info
 
 ## LAVA Ready
