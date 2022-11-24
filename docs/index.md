@@ -220,42 +220,41 @@ Below is a general picture of the Trusted firmware A CI flow. Top boxes are Jenk
 
 The first job, the trigger-job, can be any job defined below, each covering a set of platforms and build/run configurations through test groups (TEST_GROUPS),  ultimately split as test descriptions (TEST_DESC). A  test description is tested by `tf-a-builder` job and a LAVA job is launched once artifacts are ready to be consumed.
 
-In terms of the trigger source, jobs can be classified by either gerrit or scheduled:
+In terms of the trigger source, jobs can be classified by either Gerrit or scheduled:
 
 * Gerrit:
+    * **tf-a-gerrit-tforg-l1**: multijob, Allow-CI+1, TF-A
+    * **tf-a-gerrit-tforg-l2**: multijob, Allow-CI+2, TF-A
+    * **tf-a-tftf-gerrit-tforg-l1:** multijob, Allow-CI+1, TF-A-tests
+    * **tf-a-tftf-gerrit-tforg-l2:** multijob, Allow-CI+2, TF-A-tests
 
-   * **tf-gerrit-tforg-l1:** multijob, Allow +1, TF-A
-   * **tf-gerrit-tforg-l2:** multijob, Allow +2, TF-A
-   * **tf-tftf-gerrit-tforg-l1:** multijob, Allow +1, TF-A-tests
-   * **tf-tftf-gerrit-tforg-l2:** multijob, Allow +2, TF-A-tests
-  
-* Scheduled: daily triggered:
-
-   * **tf-daily:** scheduled daily
+* Scheduled:
+    * **tf-a-daily:** - scheduled daily
 
 All the above jobs rely on downstream jobs:
 
-* **tf-main:** multijob, TF-A and TF-A-tests
-* **tf-coverity:** freestyle, runs coverity scan
-* **tf-static-checks:** runs Arm static code checks
+* **tf-a-main:** multijob, TF-A and TF-A-tests
+* **tf-a-coverity:** freestyle, runs coverity scan
+* **tf-a-static-checks:** runs Arm static code checks
 * **tf-a-ci-gateway:** split a test group (TEST_GROUPS) into multiple ‘.test’ files, each representing a test description (TEST_DESC)
 * **tf-a-builder:** freestyle, builds the package and launch a LAVA job
 
-Any job can be triggered manually by authorized users. Gerrit jobs are those triggered on behalf of gerrit actions, either ‘Allow +1’ or ‘Allow +2’, and track a particular project, either TF-A https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ or TF-A tests https://git.trustedfirmware.org/TF-A/tf-a-tests.git/. The following screenshot shows an example of the `tf-gerrit-tforg-l1` job at the Jenkins instance:
+Any job can be triggered manually by authorized users. Gerrit jobs are those triggered by assigning labels to a review, either ‘Allow-CI+1’ or ‘Allow-CI+2’, and track a particular project, either TF-A https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/ or TF-A tests https://git.trustedfirmware.org/TF-A/tf-a-tests.git/. The following screenshot shows an example of the `tf-a-gerrit-tforg-l1` job at the Jenkins instance:
 
 ![Alt text](images/Jenkins-build-158.png "tf-gerrit job")
 
-The tf-gerrit-tforg-l1 indicates the tracking project, tf-gerrit-tforg-l1, and the level, tf-gerrit-tforg-l1. Levels indicate testing depth (test descriptions coverage) and are used in different phases in the development phase as seen below:
+The `tf-a-gerrit-tforg-l1` indicates the tracking project (tforg), and the level (l1). Levels indicate testing depth (test descriptions coverage) and are used in different phases in the development phase as seen below:
 
 ![Alt text](images/ci-jobs-triggered-by-gerrit.png "jobs trigger")
 
-The job tf-daily runs daily, uses the latest code (the HEAD commit) and triggers two jobs: tf-main and tf-coverity. The job tf-main is the one covering most platforms so it takes longer to complete (approximately 1.5 hours)
+The job `tf-a-daily` runs daily, uses the latest code (the HEAD commit) and triggers two jobs: `tf-a-main` and `tf-a-coverity`. The job `tf-a-main` is the one covering most platforms so it takes longer to complete (approximately 1.5 hours)
 
 ![Alt text](images/overnight-ci-job.png "Overnight job")
 
-Notice that the  tf-main job also triggers tf-static-checks, the job that launches project-related static checks (copyright presence, headers in alphabetical order, line endings, coding style and banned APIs) and execute Clang static analyzer (scan-build). The job tf-coverity runs the Coverity static code check and reports metrics (defects) at https://scan.coverity.com/projects/arm-software-arm-trusted-firmware?tab=overview
+Notice that the `tf-a-main` job also triggers `tf-a-static-checks`, the job that launches project-related static checks (copyright presence, headers in alphabetical order, line endings, coding style and banned APIs) and execute Clang static analyzer (scan-build).
+The job `tf-a-coverity` runs the Coverity static code check and reports metrics (defects) at [https://scan.coverity.com/projects/arm-software-arm-trusted-firmware?tab=overview](https://scan.coverity.com/projects/arm-software-arm-trusted-firmware?tab=overview).
 
-The job tf-a-builder is the builder job and its execution is containerized inside  docker-amd64-tf-a-bionic defined at https://git.trustedfirmware.org/ci/dockerfiles.git/ repository. Anyone can fetch it with the following command and use it for local compilation
+The job `tf-a-builder` is the builder job and its execution is containerized inside  docker-amd64-tf-a-bionic defined at https://git.trustedfirmware.org/ci/dockerfiles.git/ repository. Anyone can fetch it with the following command and use it for local compilation
 
 ```
 docker pull trustedfirmware/ci-amd64-ubuntu:bionic
@@ -943,9 +942,9 @@ The top level SQUAD project for TrustedFirmware is here:
 
 ## TF-A
 
-TF-A has several SQUAD projects, the most interesting is `tf-main`:
+TF-A has several SQUAD projects, the most interesting is `tf-a-main`:
 
-	https://qa-reports.linaro.org/tf/tf-main/
+	https://qa-reports.linaro.org/tf/tf-a-main/
 
 There are other project, but the details 
 
