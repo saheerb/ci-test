@@ -207,7 +207,12 @@ The TF Open CI is divided into two separate pipelines, each handling the respect
 
 The TF-A CI pipeline https://git.trustedfirmware.org/ci/tf-a-job-configs.git/ underwent refactoring based on requirements in https://developer.trustedfirmware.org/w/collaboration/openci/, going from testing a single test configuration to hundreds of them. Besides improving considerably the QA, it added some complexity as we will see below.
 
-At the time of this writing, there are two (mostly) identical CIs, one running inside Arm https://jenkins.oss.arm.com/ (Internal CI) and one at https://ci.trustedfirmware.org/ (Open CI). These are two CI instances running in parallel but in different environments: the internal CI runs in a single node (master node) while the Open CI in multiple nodes (docker nodes). In the near future, only the Open CI will be running once all the internal CI features are fully migrated.
+At the time of this writing, there are two (mostly) identical CIs:
+
+* Internal CI aka Legacy CI: [https://jenkins.oss.arm.com/](https://jenkins.oss.arm.com/), running inside Arm (not accessible outside)
+* Open CI: [https://ci.trustedfirmware.org/](https://ci.trustedfirmware.org/)
+
+These are two CI instances running in parallel but in different environments: the internal CI runs in a single node (master node) while the Open CI in multiple nodes (docker nodes). In the near future, only the Open CI will be running once all the internal CI features are fully migrated.
 
 Below is a general picture of the Trusted firmware A CI flow. Top boxes are Jenkins jobs, except those with .sh extensions. 
 
