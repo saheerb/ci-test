@@ -369,6 +369,167 @@ TF-A, `tf-m-build-and-test` for TF-M) automatically produces a merged report
 if code coverage is enabled and there are 2 or more configurations are built
 by its sub-jobs.
 
+## Static analysis
+
+A number of static analyses are performed by OpenCI jobs. Basic examples are
+checking format of a commit message, code style conventions and usage of
+deprecated APIs. More deep and involved analyses are described below.
+
+### Coverity analysis
+
+[Coverity](https://en.wikipedia.org/wiki/Coverity) is a proprietary
+cloud-based static analisys tool which helps to find bugs and issues
+in C (etc.) based projects. Both TF-A and TF-M are run thru Coverity
+analysis, using jobs `tf-a-coverity` and `tf-m-coverity`.
+
+TF-A Coverity stats can viewed at
+[https://scan.coverity.com/projects/arm-software-arm-trusted-firmware](https://scan.coverity.com/projects/arm-software-arm-trusted-firmware)
+(a login required, e.g. via a Github). Individual defects can be viewed by
+requesting being added to the project.
+
+Note that Coverity also includes a large share of analyses required for
+MISRA compliance. Information about this aspect can be found at
+[https://developer.trustedfirmware.org/w/tf_a/tf-a-misra-analysis/](https://developer.trustedfirmware.org/w/tf_a/tf-a-misra-analysis/).
+
+### MISRA analysis using ECLAIR tool
+
+Bugseng [ECLAIR](https://www.bugseng.com/eclair) is a proprietary advanced system
+for in-depth MISRA analysis and reporting. One of its distinguishable
+features is ability to work in "differential" mode - to report issues
+which appeared (or were resolved) in one codebase comparing to another.
+This allows to use it to analyze individual patches prior to them being
+merged to the Trusted Firmware projects.
+
+ECLAIR is a complex and advanced system with many features and configuration
+parameters. The manual is included in the ECLAIR distribution, but is otherwise
+not publicly available or redistributable. Some aspects of ECLAIR usage are
+covered in the [FAQ which is available online](https://www.bugseng.com/filebrowser/download/234).
+Other documents and whitepapers are available at
+[https://www.bugseng.com/content/documentation](https://www.bugseng.com/content/documentation).
+
+ECLAIR can generate reports in a number of formats. For Trusted Firmware,
+we generate plain-text and HTML reports. HTML reports are interactive
+and allow to "drill down" thru the codebase to explore individual issues.
+There're also search, filtering, and basic diagramming capabilities.
+
+At this time, a pilot implementation of ECLAIR testing is available for
+TF-A. It should be noted that primary purpose of ECLAIR is end-to-end
+preparation of a particular software product to the MISRA compliance
+testing. A "software product" in means very specific and
+statically defined codebase and its configuration (down to toolchain
+used to build it). This is different from from the nature of the
+Trusted Firmware projects: they are essentially frameworks, supporting
+a large number of platforms, and even larger number of configuration
+options, both pertinent to general configuration of TF, or to a particular
+platform. Such a nature of TF poses a challenge of testing it with
+a tool like ECLAIR: we are effectively dealing with superimposition
+of hundreds of products, and testing those is problematic both
+from the performance (too much time to test all configs) and reporting
+(too much repetetive content) points of view. This necesitates
+testing only a subset of platforms and options. Increasing number
+of tested configurations, while producing easy to understand and
+act on reports is a subject of future work.
+
+There are following ECLAIR jobs for TF-A:
+
+* [tf-a-eclair-daily](https://ci.trustedfirmware.org/job/tf-a-eclair-daily/) -
+  whole codebase testing, with multiple configurations, running daily. This
+  job is useful for tracking "absolute" figures of MISRA issues in the codebase,
+  as well as following trends.
+* [tf-a-eclair-delta](https://ci.trustedfirmware.org/job/tf-a-eclair-delta/) -
+  this job tests patches submitted to Gerrit, and is intended to help with
+  reviews, the aim being that a patch doesn't introduce *new*
+  MISRA issues, even if the codebase in general has some number of issues,
+  which can't be addressed short-term (or at all). To provide quick
+  turnaround and reasonable system load, this job is currently builds
+  just a single TF-A configuration, and is triggered by assigning
+  `Allow-CI+1` label. This may change in the future when more configurations
+  are added to processing.
+
+Both jobs are structured as matrix jobs, with the single axis being a TF-A
+platform. ECLAIR reports are publish as job artifacts. For each job, they are:
+
+* `tf-a-eclair-daily`:
+    * `ECLAIR/full_txt` - "Full TXT" report ("full" means that both codebase-level
+      summaries and individual file reports are provided)
+    * `ECLAIR/full_html` - "Full HTML" report (likewise, both codebase summaries
+      are provide, and it's possible to "drill down" to individual files, seeing
+      the full source code, with MISRA annotations). The report is interactive and
+      with simple diagramming capabilities, allowing to group issues by different
+      criteria.
+    * `index.html` - Index file, providing quick access to the text report and
+      different presets of the HTML report. Of the particular interest is
+      "Report by issue strictness", which shows breakdown of the
+      Mandatory/Required/Advisory issues, according to the MISRA classification.
+
+* `tf-a-eclair-delta`:
+    * `diff_output/` - The primary differential text report generated by ECLAIR.
+      The issues are groupped by a MISRA rule, all issues pertinent to a particular
+      rule (across the codebase), residing in one file, named like `MC3R1.R20.9.add.etr`,
+      where `MC3R1.R20.9` is rule identifier, `add` meaning this file lists issues
+      added by the patch, while `del` - issues resolved by the patch.
+    * `misra_delta.txt` - Reports from `diff_output/`, concatenated into a single
+      file. Contents of this file also gets posted as a comment to Gerrit patch.
+    * `new_issues_html/` - HTML report for newly added issues.
+    * `resolved_issues_html/` - HTML report for resolved issues (what you see
+      here is the state of the source code *before* the patch).
+    * `index.html` - Index file, providing quick access to the reports above.
+
+#### Browsing and understanding ECLAIR reports
+
+ECLAIR reports are information and functionality packed, and besides familiarity
+with the MISRA standard itself and the ECLAIR manual, require some practice to
+understand and use.
+
+One good way to learn how to use and understand reports is to watch instruction
+videos provided on the [Bugseng Youtube channel](https://www.youtube.com/@BUGSENG/videos).
+
+Some useful videos are listed below. Before reviewing them, it is useful to know
+some basic terminology related to ECLAIR:
+
+* a report - A report is an entry in a report document produced by ECLAIR. It can
+  be seen as a synonym of "issue", but a different term is used to emphasize
+  that not every entry produced by ECLAIR is formally an "issue" or "violation"
+  of a specific MISRA rule. See e.g. "information" report kind below.
+
+* report kind (violation, caution, information): A "violation" is a type of
+  issue which was formally verified by ECLAIR to violate a corresponding MISRA
+  directive/rule. "Caution" kind is assigned to issues which could not be
+  100% formally verified by ECLAIR, at yet it suspects there may be an
+  issue. Put it another way, there can be a possibility of false positive
+  in case of "caution". Finally, "information" is not an issue with the code
+  per se, but some additional information along the lines of "know the
+  codebase better". These are output by ECLAIR because the underlying spirit
+  of the MISRA specification is that to produce a safe/verified code, as much
+  as possible information about it should be known and understood. Different
+  kinds of issues are useful for different purposes (and less useful for other).
+  For example, for crude quantitative totals, it would be counter-intuitive
+  and misleading to include number of "information" reports.
+
+* issue severity (mandatory, required, advisory) - this is actually MISRA
+  classification, each MISRA directive/rule (and thus issues related to them)
+  is classified as one of 3 severeties above.
+
+List of introductory videos for using reports:
+
+* [https://youtu.be/e3W6j38KpHU?t=725](https://youtu.be/e3W6j38KpHU?t=725)
+
+Example of browsing an (HTML) report, filtering it by different criteria,
+and understanding what this means. The video is recorded against an older
+ECLAIR release, so there are small differences in the report look. The video
+starts showing how to use ECLAIR GUI to produce a report, but the link above
+starts with a timecode where a report is discussed. The video discusses in
+particular what ECLAIR's "violation" vs "caution" vs "information" means.
+
+* [https://youtu.be/K0hiYQFdOsk?t=310](https://youtu.be/K0hiYQFdOsk?t=310)
+
+Browsing a report, understanding individual items in it, and addressing
+them in a project.
+
+* [https://youtu.be/JiMyldzHNis&t=1830s](https://youtu.be/JiMyldzHNis&t=1830s)
+
+Introduction and usage of "sunburst chart" in the ECLAIR reports.
+
 ## The TF Jenkins Job Builder (JJB) configs
 
 The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-a-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
