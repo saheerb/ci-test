@@ -1400,7 +1400,7 @@ The staging setup or “next” is meant to be used for developers to be able to
 Staging environments have been set up in the next/* namespace location: 
 	https://git.trustedfirmware.org/next.
 
-The next/* namespace is mirrored from production. The only repository that is not mirrored is the `tf-*-job-configs` repos. All other repositories are mirrored and as such the user should branch out from master.
+The next/* namespace is mirrored from production. The only repository that are not mirrored are the `tf-*-job-configs` and `ci-yadp-builder` repos. Their history will diverge and content needs to be updated manually. The `dockerfiles` repository is shared so take extra care with it.
 
 Users need to be placed in the [`trusted-firmware-staging-approvers`](https://review.trustedfirmware.org/admin/groups) Gerrit group. Since we use the role-based authorization on both the [`Production`](https://ci.trustedfirmware.org/) and the [`Staging`](https://ci.staging.trustedfirmware.org/) Jenkins, beside the trusted-firmware-staging-approvers Gerrit group, user need to be a member of the [`trusted-firmware-a-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-a-openci-users) GitHub team for the TF-A project, the [`trusted-firmware-m-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-m-openci-users) GitHub team for the TF-M project, the [`trusted-firmware-hafnium-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-hafnium-openci-users) GitHub team, or [`trusted-firmware-mbed-tls-openci-users`](https://github.com/orgs/trusted-firmware-ci/teams/trusted-firmware-mbed-tls-openci-users) Github team for the Mbed-TLS project in order to gain the permission to access the job.
 This is done by creating a ticket, [please see instructions at the bottom of the Open CI wiki page](https://developer.trustedfirmware.org/w/collaboration/openci/). The trusted-firmware-staging-approvers Gerrit group allows users to have submit and merge (+2) writes to all repositories under the next/* namespace, without needing any approval from a peer.
@@ -1412,18 +1412,16 @@ Basic rules all developers should follow:
 * The job needs to include "tf-a-", "tf-m-", "hafnium-", or "mbedtls-" as a part of the job name for the correct project.
 * Gerrit triggers and comments have to be **disabled** in the job. We do not want the staging server sending comments back to Gerrit reviews.
 * Job triggers have to be **manual** only. Timed events are not allowed, not unless it is being used for testing.
-* Developers **must** use their own job config, and not use master. Users must copy the job config, append their username and work on that config.
+* Developers **must** use their own job config, and not use master. Users must copy the job config, prepend their username and work on that config.
 
-## How to setup basic next environment
+## How to setup a basic next environment
 
 You have two options:
 
 * you can either clone the repo again from the /next/ location
 * or add a remote to your existing clone of the production repo.
 
-It might be easier to just add a /next/ remote to the user's existing repo clone and work from that. However, the /next/ has had the “basic rules” applied, and as such it is important that the user does not break these rules. 
-
-tf-m-job-configs and tf-a-job-configs are *not* mirrored from production. However the other repos are, and as such the user can branch out from master and develop from there.
+It might be easier to just add a /next/ remote to the user's existing repo clone and work from that. However, the /next/ has had the “basic rules” applied, and as such it is important that the user does not mix them up and break these rules. 
 
 To add a remote, it is simply necessary to add /next/ the url. So 
 
@@ -1433,7 +1431,7 @@ ssh://bhcopeland@review.trustedfirmware.org:29418/next/ci/tf-m-job-configs. This
 
 ssh://bhcopeland@review.trustedfirmware.org:29418/next/ci/tf-m-job-configs’ or cloned via git clone &lturl>.
 
-Once a remote has been added, the user can then do `git fetch gerrit-next` and then checkout to that branch.
+Once a remote has been added, the user can then do `git fetch gerrit-next` and then checkout to a branch on it.
 
 Sample script to clone the repositories:
 
@@ -1454,7 +1452,13 @@ done
 
 It's recommended that the user read https://jigarius.com/blog/multiple-git-remote-repositories for understanding two remotes. 
 
-Once in this environment, it is recommended the user then checkouts a new dev location and works from that. then copy the \<job_name>.yaml file. This should be the same for the \<scripts> location too. Once set up it is recommended that the user appends these changes to the job config.
+Once in this environment, you can work as normal. All changes go to the master branch which is global for everyone so please take care.
+
+### Setting up and testing jobs
+
+As the job-configs repositories are not automatically kept up to date, you should synchronize the normal jobs to what's upstream **making sure to keep any trigger related changes already in the next copy** (to comply with the rules above).
+
+Now you can copy the `<job_name>.yaml` file and prepend your username, resulting in `bhcopeland-tf-a-builder.yaml` for example. To give yourself permissions to manually trigger and cancel your jobs, you need the following:
 
 ```
   - authorization:
@@ -1468,15 +1472,31 @@ Once in this environment, it is recommended the user then checkouts a new dev lo
        - job-cancel
 ```
 
-It is important to note here, the user needs to replace bhcopeland with your own GitHub username. From this, it allows you to manually trigger and canel the job.
+This is most easily done by adding it to a `<username>-authorization.yaml.inc`. Every job should have something that looks like this:
 
-Please **ensure** any **triggers** (timed based etc) are disabled. And please ensure **silent: true** is set inside the gerrit trigger so no gerrit comments get triggered.
+```
+- authorization:
+  !include: authorization.yaml.inc
+```
 
-### Workflow for next/tf-a-job-configs.git
+You need to change the filename to the one you just created to apply the permissions.
 
-This is the workflow for creating ‘per-user’ jenkins jobs in staging instance. next/ci/tf-a-job-configs.git repository should be used in this case.
 
-![Alt text](images/tf-a-job-configs.png "Job configs flow")
+By now it should be apparent that jobs and files have dependencies among themselves like the authorization file above. Making a personal copy will keep any references to the original (production mirror) jobs. If you want to modify subjobs, you need to change all references too. For example the `tf-a-ci-gateway` job will spawn a `tf-ci-builder`. There should be an entry along the lines of the following, which you need to update.
+
+```
+- trigger-builds:
+  - project:
+    - tf-a-builder
+```
+
+It is important to note here, the user needs to replace bhcopeland with your own GitHub username. Additionally, runs will usually submit jobs to LAVA. Bigger jobs (like the tf-a-main) need to have their own project on `https://qa-reports.linaro.org/tf/`. Please speak to Linaro if your jobs requires it. Custom builders/gateways usually don't require this.
+
+Other things you might want to do is prune big jobs. They have many `multijob` fields so removing some is recommended if you don't need them.
+
+Please **ensure** any **triggers** (timed based etc) are disabled. And please ensure **silent: true** is set inside the gerrit trigger so no gerrit comments get triggered. This should be the case if you started from the next version of the job configs.
+
+You can now submit your job configs to gerrit. The bot should do a sanity check and give you +1 automatically (retrying is possible by pushing a modified patch, `git rebase --ignore-date HEAD^` will do that without actually changing anything). You can give code review +2 yourself and submit the change at your leisure (assuming you were granted permissions as above). If you navigate to `https://ci.staging.trustedfirmware.org/` you should be able see and run your jobs. Although the staging environment is separate from the production setup, please be careful running big jobs as **they run on the same hardware** and could bottleneck production!
 
 ### Workflow for other repositories
 
