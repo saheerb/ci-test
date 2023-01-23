@@ -8,7 +8,7 @@
 # User Guide
 This Google Document is a draft for development and review. Once reviewed, the doc will be made available on Phabricator on the trustedfirmware.org website where additional content will be added and reviewed.
 
-This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/. 
+This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/.
 
 ## How to Contribute to this Document
 As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be improved, please follow the steps in this section to add your improvements to this document:
@@ -16,13 +16,13 @@ As a community project, help in all areas is greatly appreciated. If while using
 Note the steps were validated using Ubuntu 20.4. Other versions/OS's may need to be adjusted for.
 
 * This document's source repository is located [here](https://git.trustedfirmware.org/ci/tf-ci-users-guide.git)
-* First, you must authorize your account by navigating [here](https://github.com/login/oauth/authorize?response_type=code&client_id=1bdcda52ecaa25e3e63b&redirect_uri=https%3A%2F%2Freview.trustedfirmware.org%2Foauth&scope=user%3Aemail&state=fAZRKIu-VpdcK81W7P3tj9A8JpUFD47D00Uz5HTBsnw=) and clicking "Authorize."  This action will redirect you to the TrustedFirmware Review Dashboard.  **Make sure you're signed in!** 
+* First, you must authorize your account by navigating [here](https://github.com/login/oauth/authorize?response_type=code&client_id=1bdcda52ecaa25e3e63b&redirect_uri=https%3A%2F%2Freview.trustedfirmware.org%2Foauth&scope=user%3Aemail&state=fAZRKIu-VpdcK81W7P3tj9A8JpUFD47D00Uz5HTBsnw=) and clicking "Authorize."  This action will redirect you to the TrustedFirmware Review Dashboard.  **Make sure you're signed in!**
 * Now click the "Browse" tab and click "Repositories"
 * Navigate to the `ci/tf-ci-users-guide` repository and click on it.  You will land on the [admin page for the TF CI Users Guide](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide)
 * On the admin page in your browser, go to the settings page and then navigate to the SSH Keys section.
 * Add your credentials
    * Since we will be using ssh, **open a terminal** and use the `ssh-keygen` command in your ~/.ssh directory to create a new keypair. Note you can use an existing key if you already have one.
-   * Still in the terminal, navigate to your ~/.ssh directory and copy the `id_rsa.pub` key. 
+   * Still in the terminal, navigate to your ~/.ssh directory and copy the `id_rsa.pub` key.
    * Back in your browser under the admin --> SSH Keys,  in the `New SSH Key` field, paste the `id_rsa.pub` key into the entry, give it a name and save it.
 
 **You are now ready to set up your local environment**
@@ -35,7 +35,7 @@ sudo apt install git-review
 ```
 (This may install any required dependencies automatically.)
 
-* set up your environment using `git config` to get your user.name, user.email, etc. 
+* set up your environment using `git config` to get your user.name, user.email, etc.
 * create your UsersGuide working directory and navigate to it.
 * Back in the Gerrit dashboard for the Users Guide, [found here](https://review.trustedfirmware.org/admin/repos/ci/tf-ci-users-guide), click on the `SSH` tab.
 * On this page, copy the git clone example entry found in the `Clone with commit-msg hook` field.  This will be used on your local machine to clone the document that you can edit.
@@ -49,7 +49,7 @@ sudo apt install git-review
 ## How to Contribute Code
 The Trusted Firmware core projects, TF-M and TF-A, are both open source projects and both share the same way to accept user contributions.  Code changes, commonly known as patches or patchsets, are git-tracked so once the corresponding project is cloned, all content (history of previous patches which now are commits) is available at the user's machine.
 
-TF projects use Gerrit [https://review.trustedfirmware.org/](https://review.trustedfirmware.org/) as a centralized system to push, update, review and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open. 
+TF projects use Gerrit [https://review.trustedfirmware.org/](https://review.trustedfirmware.org/) as a centralized system to push, update, review and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open.
 
 ![alt text](images/gerrit.png "Gerrit view")
 
@@ -120,12 +120,12 @@ All CI is done with Jenkins at https://ci.trustedfirmware.org/. There are lots o
 
 Each project have different CI jobs and scripts hosted in the following repos. For example, TF-A and TF-M are in the list below:
 
-* TF-A CI Jobs [https://git.trustedfirmware.org/ci/tf-a-job-configs.git/](https://git.trustedfirmware.org/ci/tf-a-job-configs.git/) 
+* TF-A CI Jobs [https://git.trustedfirmware.org/ci/tf-a-job-configs.git/](https://git.trustedfirmware.org/ci/tf-a-job-configs.git/)
 * TF-A CI Scripts [https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/](https://git.trustedfirmware.org/ci/tf-a-ci-scripts.git/)
 * TF-M CI Jobs [https://git.trustedfirmware.org/ci/tf-m-job-configs.git/](https://git.trustedfirmware.org/ci/tf-m-job-configs.git/)
 * TF-M CI Scripts [https://git.trustedfirmware.org/ci/tf-m-ci-scripts.git/](https://git.trustedfirmware.org/ci/tf-m-ci-scripts.git/)
 
-To see the full list of CI jobs and scripts repos for all projects in Open CI, navigate here: [https://git.trustedfirmware.org/ci/](https://git.trustedfirmware.org/ci/) 
+To see the full list of CI jobs and scripts repos for all projects in Open CI, navigate here: [https://git.trustedfirmware.org/ci/](https://git.trustedfirmware.org/ci/)
 
 The job config repositories contain Jenkins Job Definitions, called JJB (Jenkins Job Builders) files. The  CI scripts repositories host scripts that are required for the CI, i.e build scripts, static checks, etc.
 
@@ -143,7 +143,7 @@ There may be many reasons to rebuild but perhaps the most trivial one is to make
 
 # LAVA documentation
 
-LAVA(Linaro Automation and Validation Architecture) provides detailed documentation that can be found [here](https://docs.lavasoftware.org/lava/index.html). 
+LAVA(Linaro Automation and Validation Architecture) provides detailed documentation that can be found [here](https://docs.lavasoftware.org/lava/index.html).
 
 ## Supported platforms
 
@@ -158,7 +158,7 @@ Until recently, the only supported platform was the Juno board but now it also s
 * https://tf.validation.linaro.org/scheduler/device_type/juno
 * https://tf.validation.linaro.org/scheduler/device_type/fvp
 
-FVP models are virtual platforms that are able to emulate specific Arm reference designs or platforms. See the Arm documentation for more details: https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms 
+FVP models are virtual platforms that are able to emulate specific Arm reference designs or platforms. See the Arm documentation for more details: https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms
 
 These models are present on several docker images and LAVA uses these to boot and test a particular model. The specific docker image and model type are defined in the (LAVA) job definition. Docker images (containing the models) are available in a private docker registry (987685672616.dkr.ecr.us-east-1.amazonaws.com) that LAVA has access to. At the time of this writing,  these are the docker image names
 
@@ -175,7 +175,7 @@ TF-M LAVA devices are:
 
 * mps https://tf.validation.linaro.org/scheduler/device_type/mps
 * musca_b https://tf.validation.linaro.org/scheduler/device_type/musca-b
-* qemu https://tf.validation.linaro.org/scheduler/device_type/qemu. 
+* qemu https://tf.validation.linaro.org/scheduler/device_type/qemu.
 
 ## How to navigate tf.validation.linaro.org
 
@@ -193,7 +193,7 @@ One useful feature is the possibility to resubmit jobs: this enables the user to
 
 ## How to read a job and investigate results
 
-The entrypoint to investigate a job failure is looking at the job’s landing page, i.e. https://tf.validation.linaro.org/scheduler/job/74086 
+The entrypoint to investigate a job failure is looking at the job’s landing page, i.e. https://tf.validation.linaro.org/scheduler/job/74086
 
 ![alt text](images/LAVA-invalid-job.png "Invalid job")
 
@@ -214,7 +214,7 @@ At the time of this writing, there are two (mostly) identical CIs:
 
 These are two CI instances running in parallel but in different environments: the internal CI runs in a single node (master node) while the Open CI in multiple nodes (docker nodes). In the near future, only the Open CI will be running once all the internal CI features are fully migrated.
 
-Below is a general picture of the Trusted firmware A CI flow. Top boxes are Jenkins jobs, except those with .sh extensions. 
+Below is a general picture of the Trusted firmware A CI flow. Top boxes are Jenkins jobs, except those with .sh extensions.
 
 ![Alt text](images/tf-A-flow.png "TF-A Flow")
 
@@ -703,7 +703,7 @@ That is, it contains:
 * Optional build configuration for TFTF;
 * Mandatory run configuration, or nil for build-only configs.
 
-The TF and TFTF build configs are separated by a comma; the build and run configs are separated by a colon. The test configuration is consumed by the build script , and produces a build package. For example, the test configuration 
+The TF and TFTF build configs are separated by a comma; the build and run configs are separated by a colon. The test configuration is consumed by the build script , and produces a build package. For example, the test configuration
 fvp-default,fvp-default:fvp-tftf-fip.tftf-aemv8a-debug chooses:
 
 * To build TF with the fvp-default config;
@@ -731,13 +731,13 @@ Build configs are located under tf_config and tftf_config subdirectories in the 
 
 As described above, the build configuration describes what components to build, and how to build them. Before a set of images can be exercised through the test, the CI usually needs to execute a sequence of steps that are necessary to set up the test environment. These steps largely depend on the specific nature of the test at hand, the platform to be run on, etc. These steps are related to but decoupled from the build configs and are defined in run configurations. Almost all tests run in the CI mandatorily require a certain combination of steps above, some others optional. Because of the variability in applying the steps, and to avoid duplication, common steps are made available as standalone script snippets, called fragments. Individual fragments can be strung together to form a Run Configuration. Run config fragments are located under run_config subdirectory in the CI repository.
 
-For example, the following test configuration 
+For example, the following test configuration
 
 ```
 tftf-l2-extensive-tests-fvp/fvp-tspd,fvp-extensive:fvp-tftf-fip.tftf-cortexa57x4a53x4-tspd
 ```
 
-Produces the following build configs 
+Produces the following build configs
 
 ```
 Trusted Firmware config:
@@ -1002,7 +1002,7 @@ For Ansible, you need to go on deb-ansible host (`ssh root@192.168.128.15`). As 
 ```
 	# (cd /srv/lava-lab; git pull)
 	# cd /etc/ansible/playbooks
-	# ansible-playbook -i ../inventory/tf lava-lab.yml 
+	# ansible-playbook -i ../inventory/tf lava-lab.yml
 ```
 
 The following playbooks are used to configure all the relevant parts:
@@ -1075,12 +1075,12 @@ Enabling new devices in LAVA is described in the [LAVA documentation](https://ma
 
 ## Juno
 
-More details on Collaborate page: https://collaborate.linaro.org/display/CTT/Juno 
+More details on Collaborate page: https://collaborate.linaro.org/display/CTT/Juno
 
 ### Peripherals
 
 * Serial: Connected to serial console.
-* Power: 
+* Power:
 * Ethernet: Both the front and the back interfaces need to be connected.
 * Storage: SSD and USB stick (for boot image).
 
@@ -1110,7 +1110,7 @@ Another common issue is "Failed to erase old recovery image" which is generally 
 
 ## MPS2
 
-More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MPS2 
+More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MPS2
 
 ### Peripherals
 
@@ -1140,7 +1140,7 @@ This is mitigated with use of the SDMux and there have been few known issues sin
 
 ## Musca B1
 
-More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MuscaB1 
+More details in Collaborate page: https://collaborate.linaro.org/display/CTT/MuscaB1
 
 ### Flashing the device for the first time
 
@@ -1179,7 +1179,7 @@ An overview of this board, as well as a Programming and Debugging guide can be f
 
 * Serial: UART and SPI port bridging from LPC55S69 target to USB via the onboard debug probe.
 * Power: MicroUSB connector
-* Ethernet: 
+* Ethernet:
 * USB: 1 USB Full-Speed connector, 1 USB Hi-Speed connector, 1 USB Debug Probe connector, 1 USB Power connector
 * Storage: Micro SD card slot (4-bit SDIO)
 
@@ -1193,7 +1193,7 @@ The [NXP Getting Started Guide](https://www.nxp.com/document/guide/getting-start
 
 * Serial: debugger with USB-UART and USB-I2C bridge functionality
 * Power: MicroUSB connector
-* Ethernet: 
+* Ethernet:
 * USB: micro-B connector for USB device interface for PSoC 64 MCU
 * Storage: microSD Card holder
 
@@ -1205,7 +1205,7 @@ For Programming and Debugging, the onboard KitProg3 can be used. It is a program
 
 ### Troubleshooting
 
-To Program/Debug connect the board to thh PC using the USB cable. It will enumerate as a USB Composite Device if you are connecting to your PC for the first time. 
+To Program/Debug connect the board to thh PC using the USB cable. It will enumerate as a USB Composite Device if you are connecting to your PC for the first time.
 
 KitProg3 operates in either CMSIS-DAP Bulk mode, or DAPLink mode (default). In SMSIS-DAP Bulk mode, two UART interfaces are supported. The status LED (Yellow) is always ON in CMSIS-DAP Bulk mode and ramping at a rate of 2 Hz in DAPLink mode. Press and release the Mode select button (SW3) to switch between these modes.
 
@@ -1216,8 +1216,8 @@ See the [KitProg3 User Guide](https://www.infineon.com/dgdl/Infineon-KitProg3_Us
 ### Peripherals
 
 * Serial: Connected to serial console via [SusyQable](https://www.sparkfun.com/products/retired/14746)
-* Power: 
-* Ethernet: 
+* Power:
+* Ethernet:
 * USB: 1 USB-C port for debug, 1 USB-C port for charging
 * Storage:
 
@@ -1260,8 +1260,8 @@ For more Chromebook devices you can [look here](https://chromeos.guide/chromeosd
 ### Peripherals
 
 * Serial: Connected to serial console via [SusyQable](https://www.sparkfun.com/products/retired/14746)
-* Power: 
-* Ethernet: 
+* Power:
+* Ethernet:
 * USB: 1 USB-C port for debug, 1 USB-C port for charging
 * Storage: 32 GB or 128 GB, and expandable storage via SD/MicroSD
 * Ram: 4 GB or 8 GB
@@ -1366,7 +1366,7 @@ TF-A has several SQUAD projects, the most interesting is `tf-a-main`:
 
 	https://qa-reports.linaro.org/tf/tf-a-main/
 
-There are other project, but the details 
+There are other project, but the details
 
 	https://qa-reports.linaro.org/tf/tf-gerrit-tforg-l1/
 	https://qa-reports.linaro.org/tf/tf-gerrit-tforg-l2/
@@ -1382,7 +1382,7 @@ There are other project, but the details
 
 This was documented here, but has been copied here as we approach wider review:
 	https://docs.google.com/document/d/1qYEdhrYldBcnpVPNIYXG30n0CP8KUrF3DMq_EfAI43I/edit#heading=h.5y1mh3kp9xzw
-	
+
 ## Brief description of the setup
 
 This document does **not** go into detail about each project, and is meant to be used as guidelines and rules for accessing the next environment.
@@ -1397,7 +1397,7 @@ The staging setup or “next” is meant to be used for developers to be able to
 
 ## Rules & Environment setup
 
-Staging environments have been set up in the next/* namespace location: 
+Staging environments have been set up in the next/* namespace location:
 	https://git.trustedfirmware.org/next.
 
 The next/* namespace is mirrored from production. The only repository that are not mirrored are the `tf-*-job-configs` and `ci-yadp-builder` repos. Their history will diverge and content needs to be updated manually. The `dockerfiles` repository is shared so take extra care with it.
@@ -1421,13 +1421,13 @@ You have two options:
 * you can either clone the repo again from the /next/ location
 * or add a remote to your existing clone of the production repo.
 
-It might be easier to just add a /next/ remote to the user's existing repo clone and work from that. However, the /next/ has had the “basic rules” applied, and as such it is important that the user does not mix them up and break these rules. 
+It might be easier to just add a /next/ remote to the user's existing repo clone and work from that. However, the /next/ has had the “basic rules” applied, and as such it is important that the user does not mix them up and break these rules.
 
-To add a remote, it is simply necessary to add /next/ the url. So 
+To add a remote, it is simply necessary to add /next/ the url. So
 
 ssh://bhcopeland@review.trustedfirmware.org:29418/ci/tf-m-job-configs becomes
 
-ssh://bhcopeland@review.trustedfirmware.org:29418/next/ci/tf-m-job-configs. This then can be added with ‘git remote add gerrit-next 
+ssh://bhcopeland@review.trustedfirmware.org:29418/next/ci/tf-m-job-configs. This then can be added with ‘git remote add gerrit-next
 
 ssh://bhcopeland@review.trustedfirmware.org:29418/next/ci/tf-m-job-configs’ or cloned via git clone &lturl>.
 
@@ -1443,14 +1443,14 @@ set -e
 username=bhcopeland
 for project in tf-a-ci-scripts tf-a-job-configs tf-m-ci-scripts tf-m-job-configs; do
   git clone "ssh://${username}@review.trustedfirmware.org:29418/ci/${project}"
-  cd ${project} 
+  cd ${project}
   git remote add gerrit-next ssh://${username}@review.trustedfirmware.org:29418/next/ci/${project}
   git fetch gerrit-next
   cd ..
 done
 ```
 
-It's recommended that the user read https://jigarius.com/blog/multiple-git-remote-repositories for understanding two remotes. 
+It's recommended that the user read https://jigarius.com/blog/multiple-git-remote-repositories for understanding two remotes.
 
 Once in this environment, you can work as normal. All changes go to the master branch which is global for everyone so please take care.
 
@@ -1604,7 +1604,7 @@ LAVA is used to launch FVP (Fast Models) based on CI artifacts. In turn, models 
 inside a containerized environment. In other words, models are **not** run from a bare metal
 host system, but inside containers on a LAVA dispatcher, where these are launched by
 LAVA using CI artifacts and configured model parameters. In case a new **FVP Docker Image** is required
-at the CI,  a contributor needs to download the corresponding FVP model tarball, the installer, and upload it 
+at the CI,  a contributor needs to download the corresponding FVP model tarball, the installer, and upload it
 to a CI private repository, then a CI job would automatically generate the docker image.
 
 ## FVP Models
