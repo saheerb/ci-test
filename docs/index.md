@@ -503,6 +503,22 @@ MISRA compliance. Information about this aspect can be found at
 
 ### MISRA analysis using ECLAIR tool
 
+[MISRA C](https://en.wikipedia.org/wiki/MISRA_C) is a well-known industry
+standard for ensuring system quality and safety. The Trusted Firmware project
+aspires to adhere to the MISRA guidelines as much as reasonably possible,
+with the help of its stakeholders and contributors. Note that to warrant
+a particular level of MISRA C compliance, a *specific product* must undergo
+MISRA C certification. An example of a "specific product" in the context
+of Trusted Firmware would be a particular version of Trusted Firmware configured
+for a particular target system, built with a specific toolchain, etc. The
+upstream Trusted Firmware project is not a specific product, but rather a
+framework / umbrella codebase with high number of configuration choices.
+The upstream project thus does not seek for MISRA C certification itself.
+Instead, the aim is to provide largely MISRA C compliant codebase, allow
+contributors to improve the level of compliance, and help downstream
+users / vendors to proceed with the formal MISRA C certification if they
+choose so.
+
 Bugseng [ECLAIR](https://www.bugseng.com/eclair) is a proprietary advanced system
 for in-depth MISRA analysis and reporting. One of its distinguishable
 features is ability to work in "differential" mode - to report issues
