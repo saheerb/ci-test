@@ -550,11 +550,12 @@ There are following ECLAIR jobs for TF-A:
   this job tests patches submitted to Gerrit, and is intended to help with
   reviews, the aim being that a patch doesn't introduce *new*
   MISRA issues, even if the codebase in general has some number of issues,
-  which can't be addressed short-term (or at all). To provide quick
-  turnaround and reasonable system load, this job is currently builds
-  just a single TF-A configuration, and is triggered by assigning
-  `Allow-CI+1` label. This may change in the future when more configurations
-  are added to processing.
+  which can't be addressed short-term (or at all). The job is triggered by
+  assigning `Allow-CI+1`/`Allow-CI+2` label to a review, similar to other
+  CI jobs testing individual patches. To provide quick turnaround and
+  reasonable system load, this job is currently builds just a single TF-A
+  configuration. This may change in the future when more configurations
+  are added to the workflow.
 
 Both jobs are structured as matrix jobs, with the single axis being a TF-A
 platform. ECLAIR reports are publish as job artifacts. For each job, they are:
