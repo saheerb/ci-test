@@ -659,6 +659,9 @@ them in a project.
 
 Introduction and usage of "sunburst chart" in the ECLAIR reports.
 
+There is also available a ["cheat sheet"](images/eclair/eclair_diagram_cheatsheet.svg)
+for using the main report page with a sunburst chart.
+
 ## The TF Jenkins Job Builder (JJB) configs
 
 The TF project uses YAML files to define Jenkins jobs using Jenkins Job Builder (JJB): https://docs.openstack.org/infra/jenkins-job-builder/definition.html. Jobs currently defined for both projects are at https://git.trustedfirmware.org/ci/tf-m-job-configs.git/ and https://git.trustedfirmware.org/ci/tf-a-job-configs.git/. Job triggers are special types of jobs that listen to certain gerrit events. For example the job https://git.trustedfirmware.org/ci/tf-a-job-configs.git/tree/tf-a-gerrit-tforg-l1.yaml triggers every time a TF-A maintainer ‘Allows +1’ the CI to execute as defined the job’s trigger section:
