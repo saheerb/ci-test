@@ -9,7 +9,18 @@ jobs:
     steps:
     - run: echo "🎉 This job uses runner scale set runners!"
     - run: sleep 60
-
+  container-test-job-2:
+    runs-on: arc-runner-set
+    container: ubuntu:latest
+    steps:
+    - run: echo "🎉 This job uses runner scale set runners!"
+    - run: sleep 60
+  container-test-job-3:
+    runs-on: arc-runner-set
+    container: ubuntu:latest
+    steps:
+    - run: echo "🎉 This job uses runner scale set runners!"
+    - run: sleep 60
   Explore-GitHub-Actions-1:
     # You need to use the INSTALLATION_NAME from the previous step
     runs-on: arc-runner-set
