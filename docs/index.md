@@ -1707,11 +1707,8 @@ Arm Clang toolchains can be downloaded from the following link:
 which requires active Arm Developer site account, multi-factor authentication,
 compliance with restrictions and license terms acceptance.
 
-For usage in Ci, Arm Clang toolchain packages should be stored in
-`trustedfirmware-private/armclang` sub-bucket. File naming convention is to
-use `DS500-*` based package identifier (this is the original file naming scheme
-of older releases as downloaded from the Arm site, even thought newer releases
-may have changed to other default file name pattern).
+For usage in the CI, Arm Clang toolchain packages should be stored in
+`trustedfirmware-private/armclang` sub-bucket.
 
 As an example, if the download site shows the information like:
 ```
@@ -1721,15 +1718,17 @@ Description: Arm Compiler 6.13 for Linux 64-bit
 Filename: ARMCompiler6.13_standalone_linux-x86_64.tar.gz
 ```
 then you would download file `ARMCompiler6.13_standalone_linux-x86_64.tar.gz`,
-but is expected to rename it to `DS500-BN-00026-r5p0-15rel0.tar.gz` (again,
-these were original toolchain filenames as used in various CI scripts, so
-to keep using them meant preserving consistency).
-
-Then you would upload it to the sub-bucket:
+then upload it to the sub-bucket as follows:
 
 ```
-tpcli -t <token> -b trustedfirmware-private https://publish.trustedfirmware.org/upload/armclang/ DS500-BN-00026-r5p0-15rel0.tar.gz
+tpcli -t <token> -b trustedfirmware-private https://publish.trustedfirmware.org/upload/armclang/ ARMCompiler6.13_standalone_linux-x86_64.tar.gz
 ```
+
+(Note: There used to be older convention to (re)name installation tarballs
+to match internal product identifier ("Name:" field in the data example
+above). This convention is now deprecated, as it led only to confusion.
+However, in the actual bucket contains you still may see historical
+packages with the older naming convention.)
 
 At the time of Docker image build, contents of the `trustedfirmware-private/armclang`
 sub-bucket are fetched in the root directory of the
@@ -1739,7 +1738,7 @@ checkout. For example, it would be:
 ```txt
 dockerfiles
 |
-+- DS500-BN-00026-r5p0-15rel0.tar.gz
++- ARMCompiler6.13_standalone_linux-x86_64.tar.gz
 \- bionic-amd64-tf-a-build
    |
    +- build.sh
@@ -1751,13 +1750,13 @@ copy it from the parent directory into the image's directory, using suitable
 commands in its `build.sh` script, e.g.:
 
 ```
-cp ../DS500-BN-00026-r5p0-15rel0.tar.gz .
+cp ../ARMCompiler6.13_standalone_linux-x86_64.tar.gz .
 ```
 
 (Note: it should be copy and not move, because other images may refer to the same
 file.)
 
-After that, Dockerfile can refer to the `DS500-BN-00026-r5p0-15rel0.tar.gz` file
+After that, Dockerfile can refer to the `ARMCompiler6.13_standalone_linux-x86_64.tar.gz` file
 as usual (e.g. in a COPY statement).
 
 # Misc Info
