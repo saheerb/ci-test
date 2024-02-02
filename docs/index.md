@@ -6,9 +6,7 @@
 [TOC]
 
 # User Guide
-This Google Document is a draft for development and review. Once reviewed, the doc will be made available on Phabricator on the trustedfirmware.org website where additional content will be added and reviewed.
-
-This guide briefly explains how to use and contribute to the Trusted Firmware project https://www.trustedfirmware.org/, in particular the Trusted Firmware A https://www.trustedfirmware.org/projects/tf-a/ and Trusted Firmware M https://www.trustedfirmware.org/projects/tf-m/.
+This guide briefly explains how to use and contribute to the [Trusted Firmware project](https://www.trustedfirmware.org/), in particular the [Trusted Firmware-A](https://www.trustedfirmware.org/projects/tf-a/) and [Trusted Firmware-M](https://www.trustedfirmware.org/projects/tf-m/).
 
 ## How to Contribute to this Document
 As a community project, help in all areas is greatly appreciated. If while using this document, issues are found or content can be improved, please follow the steps in this section to add your improvements to this document:
@@ -49,31 +47,36 @@ sudo apt install git-review
 ## How to Contribute Code
 The Trusted Firmware core projects, TF-M and TF-A, are both open source projects and both share the same way to accept user contributions.  Code changes, commonly known as patches or patchsets, are git-tracked so once the corresponding project is cloned, all content (history of previous patches which now are commits) is available at the user's machine.
 
-TF projects use Gerrit [https://review.trustedfirmware.org/](https://review.trustedfirmware.org/) as a centralized system to push, update, review and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open.
+TF projects use Gerrit [https://review.trustedfirmware.org/](https://review.trustedfirmware.org/) as a centralized system to push, update and review patches. Contributors must push their patches to gerrit, so CI and reviewers can see the proposed change. One can see the open ones at https://review.trustedfirmware.org/q/status:open.
 
 ![alt text](images/gerrit.png "Gerrit view")
 
-Once a patch is approved, one of the core maintainers merges it to the main branch (master) through Gerrit. The same cycle is repeated for every patch, where a patch series may be merged in one step.
+Once a patch is approved, one of the core maintainers merges it into the repository through Gerrit. The same cycle is repeated for every patch, where a patch series may be merged in one step.
 
-Mailing lists  https://lists.trustedfirmware.org/mailman/listinfo/tf-a https://lists.trustedfirmware.org/mailman/listinfo/tf-m are used to communicate latest news and also it is the main channel for users to post questions or issues, so it is a good idea to subscribe to these. Note, the mailing lists are not intended for patch reviews, so patches should go into Gerrit and news/questions/issues through the mailing lists.
+Mailing lists ([TF-A](https://lists.trustedfirmware.org/mailman3/lists/tf-a.lists.trustedfirmware.org/), [TF-M](https://lists.trustedfirmware.org/mailman3/lists/tf-m.lists.trustedfirmware.org/)) are used to communicate latest news and also it is the main channel for users to post questions or issues, so it is a good idea to subscribe to these. Note, the mailing lists are not intended for patch reviews, so patches should go into Gerrit and news/questions/issues through the mailing lists.
 
 ### Gerrit Setup
 
-Once the project is cloned, there are some two extra steps to setup gerrit properly: 1. setting up the gerrit remote repository and 2. Git-review package installation
+Once the project is cloned, there are some two extra steps to setup gerrit properly:
 
-For example, under the TF-A project, use the following command  to add the remote
+1. Setting up the gerrit remote repository
+2. Git-review package installation
+
+For example, under the TF-A project, use the following command  to add the remote:
 
 ```
 $ git remote add gerrit ssh://<gerrit user>@review.trustedfirmware.org:29418/TF-A/trusted-firmware-a
 ```
 
-For TF-M, the same command applies except that remote’s url is a bit different
+For TF-M, the same command applies except that the remote's url is a bit different:
 
 ```
 $ git remote add gerrit ssh://<gerrit user>@review.trustedfirmware.org:29418/TF-M/trusted-firmware-m
 ```
 
-As a safety check, run the command git remote -v and make sure gerrit remote is present. The next step is to install the git-review package in your corresponding Linux distribution.  For example, on Ubuntu this would be
+As a safety check, run the command git remote -v and make sure gerrit remote is present.
+
+The next step is to install the git-review package in your corresponding Linux distribution.  For example, on Ubuntu this would be:
 
 ```
 $ sudo apt install git-review
@@ -89,7 +92,9 @@ If no issues are found at this point, you should be ready to start contributing 
 
 ### Commit and review
 
-No matter what change you want to make in any repository, one needs to create one or more commits into a local branch before submission. All commits must have ‘Signed-off-by’ and ‘Change-id’ strings in the commit description otherwise submission fails. The ‘Signed-off-by’ is introduced explicitly by the user (git commit -s) and the ‘Change-id’ automatically created by the git-review plugin. Patches should be atomic, just targeting one task. A commit’s subject should answer the question ‘what changed’ and the commit’s description answers the question ‘why it changed’. Be clear and always use present verbs, i.e use Add instead of Adding.
+No matter what change you want to make in any repository, one needs to create one or more commits into a local branch before submission. All commits must have ‘Signed-off-by’ and ‘Change-id’ strings in the commit description otherwise submission fails. The ‘Signed-off-by’ is introduced explicitly by the user (git commit -s) and the ‘Change-id’ automatically created by the git-review plugin.
+
+Patches should be atomic, just targeting one task. A commit’s subject should answer the question ‘what changed’ and the commit’s description answers the question ‘why it changed’. Be clear and always use present verbs, i.e use Add instead of Adding.
 
 Once your commits are ready, type
 
@@ -110,7 +115,7 @@ git log <path to file>
 Once reviewers are included, you would probably get some feedback pretty soon. TF projects are quite active but in case you do not get any activity in a couple of days, reply from Gerrit indicating that you would like some feedback. Take the time to understand and review every comment and response properly, do corrections and update the patch promptly if required. Keep polishing the patch until all feedback/observations are resolved. A good practice is to create a new branch for each patch update (suffix a version number on the branch name) so one can switch back and forth between patch versions. CI output and reviewers’ comments are reflected in gerrit and email (the one that appears in your patch metadata), so be sure to check any of these after submission.
 
 More details about Gerrit can be found in the upstream documentation:
-	https://gerrit-documentation.storage.googleapis.com/Documentation/3.3.1/index.html
+	https://review.trustedfirmware.org/Documentation/index.html
 
 ## From the maintainer's POV
 
@@ -147,20 +152,18 @@ LAVA(Linaro Automation and Validation Architecture) provides detailed documentat
 
 ## Supported platforms
 
-TF project support the following platforms in LAVA [https://tf.validation.linaro.org/scheduler/device_types](https://tf.validation.linaro.org/scheduler/device_types)
-
-![alt text](images/LAVA-device-types.png "LAVA Device Types")
+TF project supports a number of platforms in LAVA. Refer to the ["Current list of available devices" section](#current-list-of- available-devices) for more information.
 
 ### TF-A supported platforms
 
-Until recently, the only supported platform was the Juno board but now it also supports FVP models:
+Supported platforms for the TF-A project include the Juno board and FVP models (among other platforms):
 
 * https://tf.validation.linaro.org/scheduler/device_type/juno
 * https://tf.validation.linaro.org/scheduler/device_type/fvp
 
-FVP models are virtual platforms that are able to emulate specific Arm reference designs or platforms. See the Arm documentation for more details: https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms
+FVP models are virtual platforms that are able to emulate specific Arm reference designs or platforms. See the [Arm documentation](https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms) for more details.
 
-These models are present on several docker images and LAVA uses these to boot and test a particular model. The specific docker image and model type are defined in the (LAVA) job definition. Docker images (containing the models) are available in a private docker registry (987685672616.dkr.ecr.us-east-1.amazonaws.com) that LAVA has access to. At the time of this writing,  these are the docker image names
+These models are present on several docker images and LAVA uses these to boot and test a particular model. The specific docker image and model type are defined in the (LAVA) job definition. Docker images (containing the models) are available in a private docker registry (987685672616.dkr.ecr.us-east-1.amazonaws.com) that LAVA has access to. At the time of this writing,  these are the docker image names:
 
 * fvp:fvp_base_revc-2xaemv8a_11.12_38
 * fvp:foundation_platform_11.12_38
@@ -171,7 +174,7 @@ Tag name, i.e. fvp_base_revc-2xaemv8a_11.12_38, corresponds to the particular mo
 
 ### TF-M supported platforms
 
-TF-M LAVA devices are:
+At the time of writing, TF-M LAVA devices are:
 
 * mps https://tf.validation.linaro.org/scheduler/device_type/mps
 * musca_b https://tf.validation.linaro.org/scheduler/device_type/musca-b
@@ -179,7 +182,7 @@ TF-M LAVA devices are:
 
 ## How to navigate tf.validation.linaro.org
 
-All LAVA jobs triggered by Jenkins are executed at the TF LAVA lab https://tf.validation.linaro.org/ instance. The Jenkins jobs that launch LAVA jobs are: `tf-a-builder` https://ci.trustedfirmware.org/job/tf-a-builder/ and `tf-m-lava-submit` https://ci.trustedfirmware.org/job/tf-m-lava-submit/. The Jenkins jobs contain the corresponding LAVA id which can be used to find the corresponding job at https://tf.validation.linaro.org/. In case of `tf-a-builder` job, the LAVA log itself is fetched from LAVA lab and attached to the job as seen below:
+All LAVA jobs triggered by Jenkins are executed at the [TF LAVA lab](https://tf.validation.linaro.org/) instance. The Jenkins jobs that launch LAVA jobs are: [`tf-a-builder`](https://ci.trustedfirmware.org/job/tf-a-builder/) and [`tf-m-lava-submit`](https://ci.trustedfirmware.org/job/tf-m-lava-submit/). The Jenkins jobs contain the corresponding LAVA id which can be used to find the corresponding job at https://tf.validation.linaro.org/. In case of `tf-a-builder` job, the LAVA log itself is fetched from LAVA lab and attached to the job as seen below:
 
 ![alt text](images/Jenkins-49541.png "LAVA log")
 
@@ -204,8 +207,6 @@ Depending on the device type and job definition, the output can vary considerabl
 The TF Open CI is divided into two separate pipelines, each handling the respective project (TF-A vs TF-M). Each is different in design so we describe each separately.
 
 ## TF-A CI pipeline description
-
-The TF-A CI pipeline https://git.trustedfirmware.org/ci/tf-a-job-configs.git/ underwent refactoring based on requirements in https://developer.trustedfirmware.org/w/collaboration/openci/, going from testing a single test configuration to hundreds of them. Besides improving considerably the QA, it added some complexity as we will see below.
 
 At the time of this writing, there are two (mostly) identical CIs:
 
@@ -498,10 +499,6 @@ TF-A Coverity stats can viewed at
 [https://scan.coverity.com/projects/arm-software-arm-trusted-firmware](https://scan.coverity.com/projects/arm-software-arm-trusted-firmware)
 (a login required, e.g. via a Github). Individual defects can be viewed by
 requesting being added to the project.
-
-Note that Coverity also includes a large share of analyses required for
-MISRA compliance. Information about this aspect can be found at
-[https://developer.trustedfirmware.org/w/tf_a/tf-a-misra-analysis/](https://developer.trustedfirmware.org/w/tf_a/tf-a-misra-analysis/).
 
 ### MISRA analysis using ECLAIR tool
 
